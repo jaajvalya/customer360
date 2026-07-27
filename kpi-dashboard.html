@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Intelligence Command Center | ACL Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --acl-navy: #003366;
+    --acl-navy-deep: #001f3f;
+    --acl-blue: #0066b3;
+    --acl-cyan: #00a3e0;
+    --acl-orange: #f39200;
+    --acl-orange-hover: #e08500;
+    --ink: #1a2332;
+    --ink-soft: #5a6578;
+    --line: #dce3ec;
+    --line-soft: #eef2f7;
+    --paper: #ffffff;
+    --panel: #ffffff;
+    --panel-2: #ffffff;
+    --success: #0d7a4a;
+    --success-bg: #e8f5ef;
+    --danger: #c0392b;
+    --danger-bg: #fdecea;
+    --warn: #b7791f;
+    --warn-bg: #fef6e7;
+    --accent-soft: rgba(0, 163, 224, 0.1);
+    --gradient-brand: linear-gradient(135deg, var(--acl-navy) 0%, var(--acl-blue) 45%, var(--acl-cyan) 100%);
+    --sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --r: 0;
+    --r-lg: 0;
+    --shadow: 0 1px 3px rgba(0, 51, 102, 0.06), 0 8px 24px rgba(0, 51, 102, 0.06);
+  }
+
+  * { box-sizing: border-box; }
+  .app,
+  .app * {
+    border-radius: 0 !important;
+  }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #ffffff;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .app { display: flex; min-height: 100vh; }
+
+  /* —— Sidebar —— */
+  .rail {
+    width: 260px;
+    flex: none;
+    background: var(--paper);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .rail-brand {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--line);
+    background: #ffffff;
+  }
+  .rail-brand img {
+    height: 36px;
+    width: auto;
+    display: block;
+    margin-bottom: 14px;
+  }
+  .product-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--acl-navy);
+    letter-spacing: -0.02em;
+    margin: 0 0 2px;
+  }
+  .product-sub {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .rail-scroll { overflow-y: auto; padding: 12px 10px; flex: 1; }
+  .rail-group-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    padding: 14px 10px 6px;
+  }
+  .rail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .rail-item:hover { background: #ffffff; color: var(--ink); }
+  .rail-item.active {
+    background: #ffffff;
+    color: var(--acl-blue);
+    border-color: rgba(0, 163, 224, 0.25);
+    font-weight: 600;
+  }
+  .rail-ico {
+    width: 28px;
+    height: 28px;
+    flex: none;
+    border-radius: 7px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--acl-navy);
+  }
+  .rail-item.active .rail-ico {
+    background: var(--gradient-brand);
+    color: #fff;
+  }
+  .rail-foot {
+    padding: 14px 16px;
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+  }
+
+  /* —— Main —— */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .topbar {
+    height: 60px;
+    flex: none;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .search-wrap {
+    flex: 1;
+    max-width: 440px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 0 14px 0 38px;
+    font-family: var(--sans);
+    font-size: 13px;
+    background: #ffffff;
+    color: var(--ink);
+  }
+  .search-wrap input:focus {
+    outline: 2px solid rgba(0, 163, 224, 0.35);
+    border-color: var(--acl-cyan);
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+  }
+  .topbar-spacer { flex: 1; }
+  .top-ico {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    position: relative;
+    background: #fff;
+    cursor: pointer;
+  }
+  .top-ico.copilot {
+    background: var(--gradient-brand);
+    border: none;
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .dot-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--acl-orange);
+    border: 2px solid #fff;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gradient-brand);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .content {
+    padding: 1px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  .page-head { margin-bottom: 1px; }
+  .breadcrumb {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .page-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 6px;
+    color: var(--acl-navy-deep);
+  }
+  .page-purpose {
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    max-width: 720px;
+    margin: 0;
+    line-height: 1.55;
+  }
+  .exec-copilot-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    font-size: 12px;
+    color: var(--ink-soft);
+    max-width: 340px;
+  }
+  .exec-copilot-pill strong { color: var(--acl-navy); font-weight: 600; }
+  .exec-copilot-pill .spark { color: var(--acl-orange); }
+
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 20px;
+    margin-bottom: 1px;
+    box-shadow: var(--shadow);
+  }
+  .panel-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .panel-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line-soft);
+  }
+
+  .filterbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .fchip {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .fchip:hover { border-color: var(--acl-cyan); color: var(--ink); }
+  .fchip::after { content: "▾"; font-size: 9px; opacity: 0.6; }
+
+  .fselect-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    background: #ffffff;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .fselect-label {
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .fselect {
+    border: none;
+    background: #ffffff;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--acl-navy);
+    cursor: pointer;
+    padding: 2px 4px;
+    min-width: 120px;
+  }
+  .fselect:focus { outline: 2px solid rgba(0, 163, 224, 0.35); }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: var(--ink-soft);
+    background: #fff;
+  }
+  .tag.accent {
+    border-color: rgba(0, 163, 224, 0.35);
+    color: var(--acl-blue);
+    background: #ffffff;
+  }
+  .tag.orange {
+    border-color: rgba(243, 146, 0, 0.35);
+    color: #c67600;
+    background: #ffffff;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr; } }
+
+  .kpi {
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 16px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-brand);
+    opacity: 0.85;
+  }
+  .kpi.highlight::before { background: linear-gradient(90deg, var(--acl-orange), #ffb347); }
+  .kpi .k-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi .k-val {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 6px 0 2px;
+    color: var(--acl-navy-deep);
+    letter-spacing: -0.02em;
+  }
+  .kpi .k-val small {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .kpi .k-delta { font-size: 11px; color: var(--ink-soft); }
+  .kpi .k-delta.up { color: var(--success); }
+  .kpi .k-delta.down { color: var(--danger); }
+  .kpi .k-spark {
+    height: 28px;
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .kpi .k-spark i {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    background: linear-gradient(180deg, var(--acl-cyan), var(--acl-blue));
+    opacity: 0.55;
+  }
+  .kpi.highlight .k-spark i {
+    background: linear-gradient(180deg, var(--acl-orange), #e08500);
+    opacity: 0.65;
+  }
+
+  .row { display: flex; gap: 1px; margin-bottom: 0; }
+  .col { flex: 1; min-width: 0; }
+  @media (max-width: 900px) { .row { flex-direction: column; } }
+
+  .chart-box {
+    height: 168px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: #ffffff;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .chart-box .cb-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .block-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .block-sub { font-size: 10px; color: #94a3b8; font-family: var(--mono); margin-top: 2px; }
+  .chart-body { flex: 1; position: relative; min-height: 0; }
+
+  .donut {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--acl-blue) 0 28%,
+      var(--acl-cyan) 28% 52%,
+      #94a3b8 52% 68%,
+      var(--acl-orange) 68% 82%,
+      var(--line) 82% 100%
+    );
+    margin: 8px auto;
+    position: relative;
+  }
+  .donut::after {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    background: #ffffff;
+    border-radius: 50%;
+  }
+  .cluster-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--ink-soft);
+  }
+  .cluster-chip {
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid var(--line);
+    font-size: 10px;
+  }
+  .cluster-chip strong { color: var(--acl-navy); }
+
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 100%; padding-top: 8px; }
+  .bars i {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(180deg, #cbd5e1, #94a3b8);
+    min-height: 8%;
+  }
+  .bars i.hi {
+    background: linear-gradient(180deg, var(--acl-cyan), var(--acl-blue));
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  table.data-table th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+    padding: 8px 10px;
+  }
+  table.data-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--ink);
+  }
+  table.data-table tr:last-child td { border-bottom: none; }
+  table.data-table tbody tr:hover { background: #ffffff; }
+
+  .pill {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-weight: 500;
+  }
+  .pill.high { border: 1px solid #f5c6cb; color: var(--danger); background: #ffffff; }
+  .pill.med { border: 1px solid #ffeaa7; color: var(--warn); background: #ffffff; }
+  .pill.low { border: 1px solid #b8e0c8; color: var(--success); background: #ffffff; }
+
+  .insight-list { display: flex; flex-direction: column; gap: 0; }
+  .list-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .list-row:last-child { border-bottom: none; }
+
+  .cardgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 900px) { .cardgrid { grid-template-columns: 1fr; } }
+
+  .icard {
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 16px;
+    background: #ffffff;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .icard:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(0, 163, 224, 0.3);
+  }
+  .icard h5 { margin: 0 0 6px; font-size: 13px; color: var(--acl-navy); }
+  .icard p { margin: 0 0 10px; font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .icard .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--ink-soft);
+    border-top: 1px dashed var(--line);
+    padding-top: 8px;
+    margin-bottom: 10px;
+  }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-weight: 500;
+  }
+  .btn.primary {
+    background: var(--gradient-brand);
+    border: none;
+    color: #fff;
+  }
+  .btn.accent {
+    background: var(--acl-orange);
+    border-color: var(--acl-orange);
+    color: #fff;
+  }
+  .btn.accent:hover { background: var(--acl-orange-hover); }
+  .btn.ghost { background: transparent; }
+
+  .layer-banner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .layer-step {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px 14px;
+    border-radius: var(--r);
+    border: 1px solid var(--line);
+    background: #ffffff;
+    font-size: 11px;
+  }
+  .layer-step span {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--acl-cyan);
+    margin-bottom: 4px;
+  }
+  .layer-step b { color: var(--acl-navy); font-size: 12px; }
+
+  .kpi-grid.c2 { grid-template-columns: repeat(2, 1fr); }
+  .kpi-grid.c4 { grid-template-columns: repeat(4, 1fr); }
+  .cardgrid.c2 { grid-template-columns: repeat(2, 1fr); }
+  .cardgrid.c4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) {
+    .kpi-grid.c4, .cardgrid.c4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .profile-sidebar { flex: 0 0 280px; }
+  .c360-layout { align-items: stretch; }
+  .c360-layout > .profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .c360-layout > .profile-sidebar > .profile-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin-bottom: 0;
+  }
+  .c360-layout > .profile-sidebar > .profile-panel .profile-panel-fill {
+    flex: 1 1 auto;
+    min-height: 12px;
+  }
+
+  .churn-layout { align-items: stretch; }
+  .churn-layout > .col {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .churn-layout .churn-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin-bottom: 0;
+  }
+  .churn-layout .churn-panel .explain-block {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .churn-layout .churn-panel-fill {
+    flex: 1 1 auto;
+    min-height: 12px;
+  }
+
+  .behavior-layout { align-items: stretch; }
+  .behavior-layout > .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .behavior-layout .behavior-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin-bottom: 0;
+  }
+  .behavior-layout .behavior-panel-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+  }
+  .behavior-layout .behavior-panel .chart-box {
+    flex: 1 1 auto;
+    min-height: 220px;
+    height: auto;
+  }
+  .behavior-layout .behavior-panel .placeholder-x {
+    flex: 1 1 auto;
+    min-height: 180px;
+    height: auto;
+  }
+  .behavior-layout .behavior-panel-fill {
+    flex: 1 1 auto;
+    min-height: 8px;
+  }
+
+  .communities-cardgrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(257px, auto);
+    gap: 1px;
+    align-items: stretch;
+  }
+  @media (max-width: 900px) {
+    .communities-cardgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .communities-cardgrid { grid-template-columns: 1fr; }
+  }
+  .communities-cardgrid .icard {
+    height: 100%;
+    min-height: 257px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .communities-cardgrid .icard h5 { font-size: 14px; margin-bottom: 8px; }
+  .communities-cardgrid .icard p { flex: 1 1 auto; font-size: 13px; line-height: 1.55; }
+  .communities-cardgrid .icard .btnrow { margin-top: auto; flex-wrap: wrap; }
+  .avatar-lg {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    background: var(--gradient-brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-name { font-weight: 700; font-size: 15px; text-align: center; }
+  .profile-meta { text-align: center; font-family: var(--mono); font-size: 10px; color: #94a3b8; margin-bottom: 12px; }
+  .kpi.compact { padding: 12px; }
+  .kpi.compact .k-val { font-size: 18px; }
+  .kpi.compact::before { height: 2px; }
+  .kpi.compact .k-spark { display: none; }
+
+  .ai-summary {
+    background: #ffffff;
+    border: 1px solid rgba(0, 163, 224, 0.25);
+    border-radius: var(--r);
+    padding: 14px;
+  }
+  .ai-summary .ai-kind {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    color: var(--acl-blue);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .ai-summary p { margin: 0; font-size: 13px; line-height: 1.6; }
+
+  .heat {
+    display: grid;
+    gap: 3px;
+    height: 100%;
+    min-height: 140px;
+  }
+  .heat i { border-radius: 3px; }
+
+  .bar-cell {
+    height: 6px;
+    border-radius: 3px;
+    background: #ffffff;
+    border: 1px solid var(--line-soft);
+    position: relative;
+    overflow: hidden;
+    width: 64px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .bar-cell i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--gradient-brand);
+    border-radius: 3px;
+  }
+
+  .placeholder-x {
+    border: 1px dashed var(--line);
+    border-radius: var(--r);
+    background: #ffffff;
+    min-height: 160px;
+  }
+
+  .timeline-h { display: flex; align-items: flex-start; padding: 8px 0; }
+  .t-step { flex: 1; text-align: center; position: relative; padding: 0 4px; }
+  .t-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--acl-navy);
+    margin: 0 auto 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .t-step.drop .t-dot { border-color: var(--danger); background: #ffffff; }
+  .t-line {
+    position: absolute;
+    top: 6px;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .t-step:first-child .t-line { display: none; }
+  .t-name { font-size: 11px; font-weight: 600; }
+  .t-sub { font-size: 9px; color: #94a3b8; font-family: var(--mono); }
+
+  .explain-block {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 14px;
+  }
+  .screen-stub {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ink-soft);
+  }
+  .screen-stub h2 { color: var(--acl-navy); margin: 0 0 8px; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 0; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="rail-brand">
+      <img src="ACL-Logo.webp" alt="ACL Digital — an ALTEN group company" width="160" height="36">
+      <p class="product-title">Customer Intelligence AI</p>
+      <p class="product-sub">Beyond Customer 360 · Communications</p>
+    </div>
+    <nav class="rail-scroll" id="railNav" aria-label="Main navigation"></nav>
+    <div class="rail-foot">Intelligence layer 3 · Predictive · Demo</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" placeholder="Search subscribers, segments, towers, insights…" aria-label="Search">
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="top-ico" title="Alerts"><span class="dot-badge"></span>🔔</div>
+      <div class="top-ico copilot" title="Executive Copilot">AI</div>
+      <div class="top-ico" title="Settings">⚙</div>
+      <div class="avatar" title="User">AR</div>
+    </header>
+
+    <main class="content" id="appContent"></main>
+  </div>
+</div>
+
+<script>
+(function () {
+  const NAV = [
+    { group: "Command", items: [
+      { k: "dashboard", ico: "01", label: "KPI Dashboard" },
+      { k: "c360", ico: "02", label: "Customer 360+" },
+      { k: "behavior", ico: "03", label: "Behavior Intelligence" },
+      { k: "journey", ico: "04", label: "Customer Journey" },
+    ]},
+    { group: "Predictive", items: [
+      { k: "churn", ico: "05", label: "Churn Intelligence" },
+      { k: "opportunity", ico: "06", label: "Opportunity Finder" },
+      { k: "communities", ico: "07", label: "Hidden Communities" },
+    ]},
+    { group: "Autonomous", items: [
+      { k: "copilot", ico: "08", label: "AI Copilot" },
+      { k: "agents", ico: "09", label: "AI Agents" },
+      { k: "command", ico: "10", label: "Executive Command Center" },
+    ]},
+  ];
+
+  const META = {
+    dashboard: {
+      title: "Customer Intelligence Command Center",
+      crumb: "Home / Customer Intelligence / KPI Dashboard",
+      purpose: "Executive view of subscriber health, network experience, revenue signals, and AI-ranked actions.",
+      extraHead: true,
+    },
+    c360: {
+      title: "Customer 360+",
+      crumb: "Home / Customer 360+",
+      purpose: "Unified subscriber record with AI summary, health scores, and cross-channel timeline (CRM, billing, network, digital).",
+    },
+    behavior: {
+      title: "Behavior Intelligence",
+      crumb: "Home / Behavior Intelligence",
+      purpose: "Digital clickstream, app usage, session patterns, and intent detection for telecom self-care and acquisition journeys.",
+    },
+    journey: {
+      title: "Customer Journey Explorer",
+      crumb: "Home / Customer Journey",
+      purpose: "Multi-step funnel visualization for new line, plan change, and FWA signup with AI-identified drop-offs.",
+    },
+    churn: {
+      title: "Churn Intelligence",
+      crumb: "Home / Churn Intelligence",
+      purpose: "Explainable churn scoring, intervention offers, and retention queue for mobile and enterprise accounts.",
+    },
+    opportunity: {
+      title: "Opportunity Finder",
+      crumb: "Home / Opportunity Finder",
+      purpose: "AI-ranked cross-sell, upsell, and bundle opportunities with revenue potential across the subscriber base.",
+    },
+    communities: {
+      title: "Hidden Communities",
+      crumb: "Home / Hidden Communities",
+      purpose: "Unsupervised behavioral clusters not present in traditional telecom segments — ready for campaign export.",
+    },
+    copilot: { title: "AI Copilot", crumb: "Home / AI Copilot", purpose: "Conversational access to customer intelligence (coming soon in this demo)." },
+    agents: { title: "AI Agents", crumb: "Home / AI Agents", purpose: "Agent fleet operations (coming soon in this demo)." },
+    command: { title: "Executive Command Center", crumb: "Home / Executive Command Center", purpose: "Boardroom rollup view (coming soon in this demo)." },
+  };
+
+  let currentScreen = "dashboard";
+  const filters = {
+    segment: "all",
+    region: "national",
+    lob: "all",
+    period: "30d",
+    compare: "prior",
+    channel: "web_app",
+    behaviorSegment: "all",
+    journeyType: "postpaid",
+    journeyChannel: "digital",
+    cohort: "10k",
+    riskTier: "all",
+    churnLob: "mobile_fwa",
+    oppType: "all",
+    communityView: "all",
+    c360Account: "rivera",
+  };
+
+  const FILTER_OPTS = {
+    segment: [
+      { v: "all", l: "All subscribers" },
+      { v: "consumer", l: "Consumer mobile" },
+      { v: "enterprise", l: "Enterprise & SMB" },
+      { v: "fwa", l: "FWA households" },
+    ],
+    region: [
+      { v: "national", l: "National" },
+      { v: "northeast", l: "Northeast" },
+      { v: "south", l: "South" },
+      { v: "west", l: "West" },
+    ],
+    lob: [
+      { v: "all", l: "Mobile · FWA · Enterprise" },
+      { v: "mobile", l: "Mobile only" },
+      { v: "fwa", l: "Fixed wireless" },
+      { v: "enterprise", l: "Enterprise" },
+    ],
+    period: [
+      { v: "7d", l: "Last 7 days" },
+      { v: "30d", l: "Last 30 days" },
+      { v: "90d", l: "Last 90 days" },
+    ],
+    compare: [
+      { v: "prior", l: "Prior period" },
+      { v: "yoy", l: "Year over year" },
+      { v: "plan", l: "Vs plan" },
+    ],
+    channel: [
+      { v: "web_app", l: "Web + App" },
+      { v: "web", l: "Web only" },
+      { v: "app", l: "App only" },
+      { v: "retail", l: "Retail assisted" },
+    ],
+    behaviorSegment: [
+      { v: "all", l: "All segments" },
+      { v: "digital_first", l: "Digital-first" },
+      { v: "high_value", l: "High value" },
+      { v: "at_risk", l: "At-risk loyalists" },
+    ],
+    journeyType: [
+      { v: "postpaid", l: "New postpaid line" },
+      { v: "prepaid", l: "Prepaid activation" },
+      { v: "fwa", l: "FWA signup" },
+      { v: "upgrade", l: "Device upgrade" },
+    ],
+    journeyChannel: [
+      { v: "digital", l: "Digital" },
+      { v: "retail", l: "Retail" },
+      { v: "telesales", l: "Telesales" },
+    ],
+    cohort: [
+      { v: "10k", l: "10K sessions" },
+      { v: "50k", l: "50K sessions" },
+      { v: "250k", l: "250K sessions" },
+    ],
+    riskTier: [
+      { v: "all", l: "All tiers" },
+      { v: "high", l: "High only" },
+      { v: "med", l: "Medium only" },
+      { v: "low", l: "Low only" },
+    ],
+    churnLob: [
+      { v: "mobile_fwa", l: "Mobile + FWA" },
+      { v: "mobile", l: "Mobile" },
+      { v: "fwa", l: "FWA" },
+      { v: "enterprise", l: "Enterprise" },
+    ],
+    oppType: [
+      { v: "all", l: "All types" },
+      { v: "cross", l: "Cross-sell" },
+      { v: "upsell", l: "Upsell" },
+      { v: "retention", l: "Retention" },
+    ],
+    communityView: [
+      { v: "all", l: "All communities" },
+      { v: "growth", l: "Fastest growing" },
+      { v: "revenue", l: "Highest revenue" },
+      { v: "risk", l: "Elevated churn risk" },
+    ],
+    c360Account: [
+      { v: "rivera", l: "Rivera, Marcus" },
+      { v: "patel", l: "Patel Family Plan" },
+      { v: "chen", l: "Chen Enterprise" },
+    ],
+  };
+
+  function filterLabel(key, val) {
+    const o = (FILTER_OPTS[key] || []).find(x => x.v === val);
+    return o ? o.l : val;
+  }
+
+  function filterSeed(extra) {
+    let h = 0;
+    const s = [currentScreen, filters.segment, filters.region, filters.period, extra || ""].join("|");
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return Math.abs(h) || 1;
+  }
+
+  function fd(key, label, optKey) {
+    const opts = FILTER_OPTS[optKey || key] || [];
+    return `<label class="fselect-wrap"><span class="fselect-label">${label}</span><select class="fselect" data-filter="${key}">${opts.map(o => `<option value="${o.v}"${filters[key] === o.v ? " selected" : ""}>${o.l}</option>`).join("")}</select></label>`;
+  }
+
+  function filterContextTag() {
+    return `<span class="tag accent filter-context-tag" style="margin-left:auto">Synthetic · ${filterLabel("region", filters.region)} · ${filterLabel("period", filters.period)}</span>`;
+  }
+
+  function globalFilterPanel(extra) {
+    return `<section class="panel"><div class="panel-label">Filter &amp; context</div><div class="filterbar">
+      ${fd("segment", "Segment")}${fd("region", "Region")}${fd("lob", "LOB")}${fd("period", "Period")}${fd("compare", "Compare")}
+      ${extra || ""}${filterContextTag()}
+    </div></section>`;
+  }
+
+  function pageFilterPanel(title, inner) {
+    return `<section class="panel"><div class="panel-label">${title}</div><div class="filterbar">${inner}${filterContextTag()}</div></section>`;
+  }
+
+  function fmtMoneyM(n) { return "$" + n.toFixed(1) + "M"; }
+  function fmtPct(n, d) { return n.toFixed(d == null ? 1 : d) + "%"; }
+
+  function getDashboardData(f) {
+    const profiles = {
+      all: { health: 82, churn: 6.4, churnN: 3200, opps: 128, oppM: 4.2, qoe: 94.1, arpu: 67.4, subs: 48.6, digital: 61, alerts: 23 },
+      consumer: { health: 78, churn: 7.2, churnN: 4100, opps: 142, oppM: 3.6, qoe: 93.2, arpu: 58.2, subs: 41.2, digital: 64, alerts: 31 },
+      enterprise: { health: 88, churn: 3.8, churnN: 890, opps: 86, oppM: 6.8, qoe: 96.4, arpu: 124.5, subs: 2.1, digital: 52, alerts: 12 },
+      fwa: { health: 75, churn: 8.9, churnN: 2800, opps: 96, oppM: 2.1, qoe: 91.8, arpu: 52.1, subs: 5.4, digital: 58, alerts: 28 },
+    };
+    const base = profiles[f.segment] || profiles.all;
+    const reg = { national: 0, northeast: -3, south: 1, west: 2 }[f.region] || 0;
+    const lob = { all: 0, mobile: -1, fwa: -2, enterprise: 3 }[f.lob] || 0;
+    const periodLabel = filterLabel("period", f.period);
+    const d = {
+      health: base.health + reg + lob,
+      churn: Math.max(1, base.churn + reg * -0.08),
+      churnN: Math.round(base.churnN * (1 + reg * 0.05)),
+      opps: base.opps + Math.round(reg * 2),
+      oppM: base.oppM * (1 + lob * 0.04),
+      qoe: base.qoe + reg * 0.15,
+      arpu: base.arpu + lob * 2.2,
+      subs: base.subs * (f.region === "national" ? 1 : 0.22),
+      digital: base.digital + lob,
+      alerts: base.alerts + Math.max(0, -reg),
+      sentiment: reg < 0 ? "Neutral" : "Neutral+ ↑",
+      regionName: filterLabel("region", f.region),
+    };
+    d.insights = [
+      { tag: "Insight", accent: true, title: "Early churn cluster", body: `${d.churnN.toLocaleString()} accounts in ${d.regionName} show at-risk loyalist pattern (${periodLabel}).` },
+      { tag: "Alert", accent: false, title: "Digital frustration", body: f.region === "northeast" ? "Northeast repeat support-page visits up 18% vs prior." : "Gulf + Midwest clusters trending higher on self-care exits." },
+      { tag: "Opportunity", accent: false, title: "Device upgrade wave", body: `Early-upgrader cluster +${12 + lob}% — financing-forward offer recommended.` },
+      { tag: "Network", accent: false, title: "QoE correlation", body: `Churn +${(8 + Math.abs(reg)).toFixed(0)}% where dropped-call rate &gt; 2%.` },
+    ];
+    return d;
+  }
+
+  const C360_PROFILES = {
+    rivera: { initials: "MR", name: "Rivera, Marcus", meta: "MSISDN ···4021 · Postpaid since 2016", health: 72, sentiment: "−0.6", products: ["📱 Unlimited Plus · 3 lines", "📶 5G FWA · Home ID H-8821", "🎬 OTT bundle add-on"], devices: ["iPhone 15 Pro · Line 1", "Galaxy S24 · Line 2", "iPhone 13 · Line 3"], summary: "Stable high-ARPU household with early churn signals: billing disputes, 22% data drop, negative bill-clarity NLP." },
+    patel: { initials: "PF", name: "Patel Family Plan", meta: "Acct #11802 · 4 lines · Since 2019", health: 58, sentiment: "−0.9", products: ["📱 Shared data · 4 lines", "📶 No FWA", "🎬 Kids streaming pack"], devices: ["Pixel 8 · Line 1", "iPhone 14 · Line 2", "iPad · Line 3", "Galaxy A54 · Line 4"], summary: "Family plan with usage collapse on two lines and competitor MNP research detected in-app." },
+    chen: { initials: "CE", name: "Chen Enterprise Mobility", meta: "Acct #88213 · 240 lines · Since 2012", health: 81, sentiment: "+0.2", products: ["📱 Business unlimited pool", "📶 Private APN", "🔒 MDM suite"], devices: ["Mixed fleet · 240 endpoints"], summary: "Enterprise account stable overall; 12 lines flagged for contract renewal and competitor tariff benchmarking." },
+  };
+
+  function getC360Profile(f) {
+    const p = { ...C360_PROFILES[f.c360Account] };
+    if (f.region === "northeast") { p.health -= 4; p.sentiment = "−0.8"; }
+    if (f.period === "7d") p.summary = "[7d window] " + p.summary;
+    if (f.period === "90d") p.summary = "[90d trend] " + p.summary;
+    return p;
+  }
+
+  function getBehaviorData(f) {
+    const ch = { web_app: 1, web: 0.92, app: 0.88, retail: 0.65 }[f.channel] || 1;
+    const seg = { all: 1, digital_first: 1.12, high_value: 0.95, at_risk: 1.08 }[f.behaviorSegment] || 1;
+    return {
+      intents: [
+        { p: Math.min(99, Math.round(92 * ch * seg)), accent: true, t: "Device upgrade intent — PDP dwell" },
+        { p: Math.min(99, Math.round(81 * ch)), accent: true, t: "Plan comparison intent" },
+        { p: Math.round(64 * ch), accent: false, t: "Support-seeking intent" },
+        { p: Math.round(47 * seg), accent: false, t: "MNP / cancellation research" },
+      ],
+      features: [
+        ["Bill pay", Math.round(82 * ch)],
+        ["Data usage", Math.round(64 * ch)],
+        ["Plan compare", Math.round(41 * seg)],
+        ["Live chat", Math.round(29 * ch)],
+        ["Trade-in", Math.round(18 * seg)],
+      ],
+      summary: `Segment ${filterLabel("behaviorSegment", f.behaviorSegment)} via ${filterLabel("channel", f.channel)}: upgrade conversion ${(3.1 * seg).toFixed(1)}× baseline (${filterLabel("period", f.period)}).`,
+      session: `Session #${(filterSeed("sess") % 99999).toString(16).toUpperCase()} · ${3 + (filterSeed("dur") % 5)}m ${10 + (filterSeed("dur2") % 50)}s`,
+    };
+  }
+
+  function getJourneyData(f) {
+    const types = {
+      postpaid: { steps: ["Plans", "Device", "Credit check", "Checkout", "Activation", "Support"], subs: ["100%", "72%", "48%", "19%", "14%", "8%"], drop: 3 },
+      prepaid: { steps: ["Plans", "SIM", "Verify", "Pay", "Activate", "Support"], subs: ["100%", "81%", "62%", "44%", "38%", "12%"], drop: 3 },
+      fwa: { steps: ["Coverage", "Plan", "Install", "Checkout", "Activation", "Support"], subs: ["100%", "68%", "51%", "28%", "22%", "9%"], drop: 3 },
+      upgrade: { steps: ["Offers", "Device", "Trade-in", "Checkout", "Ship", "Support"], subs: ["100%", "76%", "58%", "35%", "31%", "11%"], drop: 3 },
+    };
+    const t = types[f.journeyType] || types.postpaid;
+    const chMult = { digital: 1, retail: 1.15, telesales: 0.92 }[f.journeyChannel] || 1;
+    const steps = t.steps.map((name, i) => ({
+      name,
+      sub: i === 0 ? "100%" : (parseFloat(t.subs[i]) * chMult).toFixed(0) + "%",
+      drop: i === t.drop,
+    }));
+    return { steps, cohortLabel: filterLabel("cohort", f.cohort), checkoutIssue: f.journeyType === "fwa" ? "Install slot abandonment" : "eSIM + credit check abandonment after step 2" };
+  }
+
+  function getChurnRows(f) {
+    const all = [
+      ["Patel Family Plan", "high", "91%", "$2,880/yr", "Usage drop + 2 care escalations", "15% loyalty + device promo", "7 days"],
+      ["Acct #88213 — Enterprise", "high", "88%", "$62,100/yr", "MNP portal visits detected", "Dedicated AM + tariff review", "3 days"],
+      ["Rivera, M.", "med", "67%", "$4,200/yr", "Billing NLP −0.6", "Bill review + statement fix", "10 days"],
+      ["Nguyen Household", "med", "61%", "$3,050/yr", "FWA latency complaints", "Network credit + priority care", "14 days"],
+      ["Acct #40921", "low", "24%", "$1,900/yr", "Seasonal roam dip", "Monitor", "—"],
+      ["West Region SMB Pool", "high", "85%", "$128,000/yr", "Contract expiry in 45d", "Renewal desk outreach", "5 days"],
+    ];
+    let rows = all.filter(r => f.riskTier === "all" || r[1] === f.riskTier);
+    if (f.churnLob === "enterprise") rows = rows.filter(r => r[0].includes("Enterprise") || r[0].includes("SMB"));
+    if (f.churnLob === "fwa") rows = rows.filter(r => r[0].includes("Nguyen") || r[0].includes("FWA"));
+    if (f.region === "west") rows = rows.slice(0, 4).concat(all.filter(r => r[0].includes("West")));
+    return rows.length ? rows : all.slice(0, 3);
+  }
+
+  function getOpportunityData(f) {
+    const all = [
+      ["Family plan cross-sell", "2,140 single-line accounts with co-located device / Wi-Fi fingerprints", "High", 3.1],
+      ["FWA bundle upsell", "3,200 mobile-only households with home broadband propensity", "High", 2.4],
+      ["International roam pack", "640 frequent roamers without active travel add-on", "Med", 0.68],
+      ["Enterprise tier upgrade", "410 SMB lines exceeding data caps monthly", "High", 1.9],
+      ["Retention — device bundle", "890 at-risk lines responsive to handset incentives", "Med", 1.1],
+      ["Add-a-line — household growth", "1,050 accounts with new member device signals", "Low", 0.54],
+    ];
+    const typeMap = { cross: 0, upsell: 1, retention: 4 };
+    let list = all.map(o => [o[0], o[1], o[2], fmtMoneyM(o[3] * (f.region === "west" ? 1.08 : f.region === "northeast" ? 0.94 : 1))]);
+    if (f.oppType !== "all") {
+      const idx = { cross: [0], upsell: [1, 3], retention: [4, 5] }[f.oppType] || [];
+      list = idx.map(i => list[i]).filter(Boolean);
+    }
+    return list;
+  }
+
+  function getCommunitiesData(f) {
+    const all = [
+      ["Night Streamers", "Peak 11pm–2am streaming; heavy mobile data", "218K", "$412M", "low", "+6.2%"],
+      ["Travel Professionals", "Roaming + multi-timezone usage", "64K", "$198M", "med", "+2.1%"],
+      ["Family Decision Makers", "Multi-line, single bill owner", "340K", "$780M", "low", "+3.8%"],
+      ["High Value Users", "Top 5% ARPU, low care contact", "92K", "$610M", "low", "+1.4%"],
+      ["Weekend Gamers", "Latency-sensitive Fri–Sun spikes", "150K", "$220M", "med", "+8.9%"],
+      ["Digital Enthusiasts", "Early feature adopters, high app use", "201K", "$305M", "low", "+5.0%"],
+    ];
+    const mult = f.region === "northeast" ? 0.92 : f.region === "west" ? 1.06 : 1;
+    let comms = all.map(c => {
+      const popK = Math.round(parseFloat(c[2]) * mult);
+      return [c[0], c[1], popK + "K", c[3], c[4], c[5]];
+    });
+    if (f.communityView === "growth") comms = [...comms].sort((a, b) => parseFloat(b[5]) - parseFloat(a[5]));
+    if (f.communityView === "revenue") comms = [...comms].sort((a, b) => parseInt(b[3].replace(/\D/g, ""), 10) - parseInt(a[3].replace(/\D/g, ""), 10));
+    if (f.communityView === "risk") comms = comms.filter(c => c[4] !== "low");
+    return comms;
+  }
+
+  function spark(n, seed) {
+    seed = seed || 42;
+    let h = "";
+    for (let i = 0; i < n; i++) {
+      const v = 22 + ((seed + i * 13) % 78);
+      h += `<i style="height:${v}%"></i>`;
+    }
+    return h;
+  }
+
+  function bars(n, hiIdx, seed) {
+    hiIdx = hiIdx || [];
+    seed = seed || 42;
+    let h = "";
+    for (let i = 0; i < n; i++) {
+      const v = 15 + ((seed + i * 17) % 85);
+      h += `<i class="${hiIdx.includes(i) ? "hi" : ""}" style="height:${v}%"></i>`;
+    }
+    return h;
+  }
+
+  function heat(cols, rows, seed) {
+    seed = seed || 42;
+    let h = `<div class="heat" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">`;
+    for (let i = 0; i < cols * rows; i++) {
+      const o = (0.15 + ((seed + i * 7) % 70) / 100).toFixed(2);
+      h += `<i style="background:rgba(0,102,179,${o})"></i>`;
+    }
+    return h + "</div>";
+  }
+
+  function pill(text, cls) {
+    return `<span class="pill ${cls}">${text}</span>`;
+  }
+
+  function barCell(pct) {
+    return `<span class="bar-cell"><i style="width:${pct}%"></i></span>`;
+  }
+
+  function iCard(title, desc, metaL, metaR, btns) {
+    return `<article class="icard"><h5>${title}</h5><p>${desc}</p><div class="meta"><span>${metaL}</span><span>${metaR}</span></div>${btns ? `<div class="btnrow">${btns}</div>` : ""}</article>`;
+  }
+
+  function pageHead(key) {
+    const m = META[key];
+    const layers = key === "dashboard" ? `
+      <div class="layer-banner" style="margin-top:12px">
+        <div class="layer-step"><span>Layer 1</span><b>Traditional C360</b> — who the subscriber is</div>
+        <div class="layer-step"><span>Layer 2</span><b>Behavior intelligence</b> — how they act</div>
+        <div class="layer-step"><span>Layer 3</span><b>Predictive intelligence</b> — what they will do</div>
+        <div class="layer-step"><span>Layer 4</span><b>Autonomous intelligence</b> — act in real time</div>
+      </div>` : "";
+    const copilot = key === "dashboard" ? `
+      <div class="exec-copilot-pill">
+        <span class="spark">✦</span>
+        <span><strong>Executive Copilot</strong> — “Which segments show rising churn risk this week?”</span>
+      </div>` : "";
+    return `
+      <header class="page-head">
+        <div class="breadcrumb">${m.crumb}</div>
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-title">${m.title}</h1>
+            <p class="page-purpose">${m.purpose}</p>
+          </div>
+          ${copilot}
+        </div>
+        ${layers}
+      </header>`;
+  }
+
+  function renderDashboard() {
+    const d = getDashboardData(filters);
+    const seed = filterSeed("dash");
+    const kpis = [
+      { label: "Customer health score", val: String(d.health), unit: "/100", delta: "+2.4 pts vs " + filterLabel("compare", filters.compare), dir: "up", hi: true },
+      { label: "Churn risk (high tier)", val: fmtPct(d.churn), unit: "", delta: "of active base · " + d.churnN.toLocaleString() + " accounts", dir: "down", hi: false },
+      { label: "Revenue opportunities", val: String(d.opps), unit: "", delta: "open AI signals · " + fmtMoneyM(d.oppM) + " potential", dir: "up", hi: false },
+      { label: "Network experience (QoE)", val: fmtPct(d.qoe), unit: "", delta: "tower QoE · " + d.regionName, dir: d.qoe >= 94 ? "up" : "down", hi: false },
+      { label: "ARPU (blended)", val: "$" + d.arpu.toFixed(2), unit: "", delta: filterLabel("lob", filters.lob), dir: "up", hi: false },
+      { label: "Active subscribers", val: d.subs.toFixed(1) + "M", unit: "", delta: filterLabel("period", filters.period), dir: "up", hi: false },
+      { label: "Digital engagement", val: d.digital + "%", unit: "", delta: "+4.0 pts app + self-care", dir: "up", hi: false },
+      { label: "Active AI alerts", val: String(d.alerts), unit: "", delta: d.regionName, dir: "up", hi: false },
+    ];
+    const kpiHtml = kpis.map(k => `
+      <article class="kpi ${k.hi ? "highlight" : ""}">
+        <div class="k-label">${k.label}</div>
+        <div class="k-val">${k.val}${k.unit ? ` <small>${k.unit}</small>` : ""}</div>
+        <div class="k-delta ${k.dir}">${k.delta}</div>
+        <div class="k-spark">${spark(12, seed + k.label.length)}</div>
+      </article>`).join("");
+
+    const churnRows = getChurnRows(filters).slice(0, 5).map(r => [r[0], filters.segment === "enterprise" ? "Enterprise mobility" : "Multi-line household", r[1], r[3], r[4]]);
+    const recs = [
+      { title: "Prioritize retention outreach", desc: d.churnN.toLocaleString() + " at-risk accounts in " + d.regionName + " (" + filterLabel("segment", filters.segment) + ").", pri: "Priority: Critical", impact: fmtMoneyM(d.oppM * 2) + " ARPU at risk", primary: "Approve cohort" },
+      { title: "Device-upgrade offer — early upgraders", desc: "Financing-led upgrade path for " + filterLabel("lob", filters.lob) + ".", pri: "Priority: High", impact: fmtMoneyM(d.oppM * 0.28) + " uplift est.", primary: "Launch offer" },
+      { title: "Escalate digital frustration regions", desc: "Proactive SMS before contact-center spike · " + d.regionName + ".", pri: "Priority: High", impact: Math.round(d.churnN * 0.15).toLocaleString() + " subscribers", primary: "Notify ops" },
+    ];
+
+    return pageHead("dashboard") + globalFilterPanel() + `
+      <section class="panel"><div class="panel-label">Executive KPI strip</div><div class="kpi-grid">${kpiHtml}</div></section>
+      <div class="row" style="margin-bottom:1px">
+        <div class="col" style="flex:2"><section class="panel" style="margin-bottom:0">
+          <div class="panel-label">Behavior clusters &amp; intent</div>
+          <div class="row"><div class="col"><div class="chart-box" style="height:200px">
+            <div class="cb-head"><div><div class="block-title">Micro-segment distribution</div><div class="block-sub">${filterLabel("segment", filters.segment)}</div></div></div>
+            <div class="chart-body"><div class="donut"></div><div class="cluster-legend">
+              <span class="cluster-chip"><strong>Value seekers</strong></span><span class="cluster-chip"><strong>Early upgraders</strong></span>
+              <span class="cluster-chip"><strong>At-risk loyalists</strong></span><span class="cluster-chip"><strong>Digital-first</strong></span>
+            </div></div></div></div>
+            <div class="col"><div class="chart-box" style="height:200px">
+              <div class="cb-head"><div><div class="block-title">Data &amp; engagement velocity</div><div class="block-sub">${filterLabel("period", filters.period)}</div></div></div>
+              <div class="chart-body"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 20,58 40,62 60,48 80,52 100,32 120,38 140,22 160,26 180,14 200,18" fill="none" stroke="#00a3e0" stroke-width="2.5"/></svg></div>
+            </div></div></div>
+        </section></div>
+        <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Network &amp; care sentiment</div>
+          <div class="chart-box" style="height:200px"><div class="cb-head"><div><div class="block-title">Sentiment pulse (7d)</div></div><span class="tag orange">${d.sentiment}</span></div>
+          <div class="chart-body"><div class="bars">${bars(7, [5, 6], seed)}</div></div></div>
+        </section></div>
+      </div>
+      <div class="row" style="margin-bottom:1px">
+        <div class="col" style="flex:1.4"><section class="panel" style="margin-bottom:0"><div class="panel-label">Top churn risks — AI ranked</div>
+          <table class="data-table"><thead><tr><th>Account</th><th>Segment</th><th>Risk</th><th>ARPU impact</th><th>Leading signal</th></tr></thead><tbody>
+          ${churnRows.map(r => `<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${pill(r[2], r[2])}</td><td>${r[3]}</td><td style="color:var(--ink-soft)">${r[4]}</td></tr>`).join("")}
+          </tbody></table></section></div>
+        <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">AI insight feed</div>
+          ${d.insights.map(i => `<div class="list-row"><span class="tag ${i.accent ? "accent" : ""}">${i.tag}</span><div><b>${i.title}</b> — ${i.body}</div></div>`).join("")}
+        </section></div>
+      </div>
+      <section class="panel"><div class="panel-label">AI recommendations</div><div class="cardgrid">
+        ${recs.map(c => iCard(c.title, c.desc, c.pri, c.impact, `<button type="button" class="btn accent">${c.primary}</button><button type="button" class="btn ghost">Details</button>`)).join("")}
+      </div></section>`;
+  }
+
+  function renderC360() {
+    const p = getC360Profile(filters);
+    const seed = filterSeed("c360");
+    return pageHead("c360") + pageFilterPanel("Subscriber context", `${fd("c360Account", "Account")}${fd("region", "Region")}${fd("period", "Period")}`) + `
+      <div class="row c360-layout" style="margin-bottom:1px">
+        <div class="col profile-sidebar"><section class="panel profile-panel">
+          <div class="panel-label">Subscriber profile</div>
+          <div class="avatar-lg">${p.initials}</div>
+          <div class="profile-name">${p.name}</div>
+          <div class="profile-meta">${p.meta}</div>
+          <div class="kpi-grid c2">
+            <article class="kpi compact"><div class="k-label">Health</div><div class="k-val">${p.health}</div></article>
+            <article class="kpi compact"><div class="k-label">Sentiment</div><div class="k-val">${p.sentiment}</div></article>
+          </div>
+          <div class="block-title" style="margin:14px 0 6px">Products &amp; lines</div>
+          ${p.products.map(x => `<div class="list-row">${x}</div>`).join("")}
+          <div class="block-title" style="margin:14px 0 6px">Devices (IMEI masked)</div>
+          ${p.devices.map(x => `<div class="list-row">${x}</div>`).join("")}
+          <div class="profile-panel-fill" aria-hidden="true"></div>
+        </section></div>
+        <div class="col"><section class="panel"><div class="panel-label">AI summary</div>
+          <div class="ai-summary"><div class="ai-kind">Generated summary · ${filterLabel("period", filters.period)}</div>
+          <p>${p.summary}</p></div>
+        </section>
+        <div class="row" style="margin-bottom:1px">
+          <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Behavior score trend</div>
+            <div class="chart-box"><div class="chart-body"><div class="bars">${bars(12, [8, 9], seed)}</div></div></div>
+          </section></div>
+          <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Touchpoint mix (${filters.period})</div>
+            <div class="chart-box"><div class="chart-body"><div class="bars">${bars(8, [2, 5], seed + 1)}</div></div></div>
+          </section></div>
+        </div>
+        <section class="panel"><div class="panel-label">Unified activity timeline</div>
+          <div class="list-row"><span class="tag">Care</span><div><b>Billing dispute</b> — voice, 8 min, open · sentiment −0.7 <span class="block-sub">2d ago</span></div></div>
+          <div class="list-row"><span class="tag">App</span><div><b>Competitor plan comparison</b> in self-care <span class="block-sub">4d ago</span></div></div>
+          <div class="list-row"><span class="tag">Billing</span><div><b>Autopay success</b> — postpaid cycle <span class="block-sub">12d ago</span></div></div>
+          <div class="list-row"><span class="tag">Network</span><div><b>3 dropped calls</b> · tower cluster NE-114 <span class="block-sub">14d ago</span></div></div>
+        </section>
+        <section class="panel"><div class="panel-label">Support &amp; billing cases</div>
+          <table class="data-table"><thead><tr><th>Case</th><th>Channel</th><th>Status</th><th>CSAT</th></tr></thead><tbody>
+            <tr><td>#CS-88213</td><td>Voice</td><td>Open</td><td>2/5</td></tr>
+            <tr><td>#CS-87990</td><td>Chat</td><td>Resolved</td><td>4/5</td></tr>
+            <tr><td>#BL-11029</td><td>Billing</td><td>Closed</td><td>—</td></tr>
+          </tbody></table>
+        </section></div>
+      </div>`;
+  }
+
+  function renderBehavior() {
+    const b = getBehaviorData(filters);
+    const seed = filterSeed("behavior");
+    return pageHead("behavior") + pageFilterPanel("Filters", `${fd("channel", "Channel")}${fd("behaviorSegment", "Segment", "behaviorSegment")}${fd("period", "Period")}${fd("region", "Region")}`) + `
+      <div class="row behavior-layout" style="margin-bottom:1px">
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Self-care heatmap</div>
+          <div class="chart-box behavior-panel-content">${heat(14, 7, seed)}</div>
+        </section></div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Intent detection</div>
+          <div class="behavior-panel-content">
+            ${b.intents.map(i => `<div class="list-row"><span class="tag ${i.accent ? "accent" : ""}">${i.p}%</span> ${i.t}</div>`).join("")}
+            <div class="behavior-panel-fill" aria-hidden="true"></div>
+          </div>
+        </section></div>
+      </div>
+      <div class="row behavior-layout" style="margin-bottom:1px">
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Session replay (sample)</div>
+          <div class="behavior-panel-content">
+            <div class="placeholder-x"></div>
+            <div class="filterbar" style="margin-top:10px;flex-shrink:0"><span class="btn ghost">◀ Prev</span><span class="btn primary">▶ Play</span><span class="btn ghost">Next ▶</span><span class="tag" style="margin-left:auto">${b.session}</span></div>
+          </div>
+        </section></div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">In-app feature usage</div>
+          <div class="behavior-panel-content">
+            <table class="data-table"><thead><tr><th>Feature</th><th>Usage</th></tr></thead><tbody>
+              ${b.features.map(r => `<tr><td>${r[0]}</td><td>${barCell(r[1])}${r[1]}%</td></tr>`).join("")}
+            </tbody></table>
+            <div class="behavior-panel-fill" aria-hidden="true"></div>
+          </div>
+        </section></div>
+      </div>
+      <div class="row behavior-layout" style="margin-bottom:1px">
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Behavior score distribution</div>
+          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(10, [7, 8], seed)}</div></div></div>
+        </section></div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Acquisition funnel</div>
+          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(6, [0], seed + 2)}</div></div></div>
+        </section></div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">AI summary</div>
+          <div class="behavior-panel-content">
+            <p style="margin:0;font-size:13px;color:var(--ink-soft);line-height:1.55">${b.summary}</p>
+            <div class="behavior-panel-fill" aria-hidden="true"></div>
+          </div>
+        </section></div>
+      </div>`;
+  }
+
+  function renderJourney() {
+    const j = getJourneyData(filters);
+    const seed = filterSeed("journey");
+    return pageHead("journey") + pageFilterPanel("Journey context", `${fd("journeyType", "Journey", "journeyType")}${fd("journeyChannel", "Channel", "journeyChannel")}${fd("cohort", "Cohort", "cohort")}${fd("region", "Region")}`) + `
+      <section class="panel"><div class="panel-label">Interactive journey map</div>
+        <div class="timeline-h">${j.steps.map(s => `
+          <div class="t-step ${s.drop ? "drop" : ""}"><div class="t-line"></div><div class="t-dot"></div><div class="t-name">${s.name}</div><div class="t-sub">${s.sub}</div></div>`).join("")}
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="col"><div class="chart-box"><div class="block-title">Conversion by step</div><div class="bars">${bars(6, [0], seed)}</div></div></div>
+          <div class="col"><div class="chart-box"><div class="block-title">Time on step</div><svg viewBox="0 0 200 90" width="100%" height="90" preserveAspectRatio="none"><polyline points="0,60 40,40 80,55 120,20 160,45 200,30" fill="none" stroke="#00a3e0" stroke-width="2.5"/></svg></div></div>
+        </div>
+      </section>
+      <div class="row" style="margin-bottom:1px">
+        <div class="col" style="flex:1.3"><section class="panel" style="margin-bottom:0"><div class="panel-label">AI drop-offs &amp; pain points</div>
+          <table class="data-table"><thead><tr><th>Step</th><th>Issue</th><th>Impact</th><th>Confidence</th></tr></thead><tbody>
+            <tr><td>Checkout</td><td>${j.checkoutIssue}</td><td>−${18 + (seed % 8)}% conv.</td><td>${85 + (seed % 10)}%</td></tr>
+            <tr><td>Device</td><td>EMI options not visible above fold</td><td>−9% conv.</td><td>78%</td></tr>
+            <tr><td>Plans</td><td>Too many unlimited tiers shown</td><td>−6% conv.</td><td>64%</td></tr>
+          </tbody></table>
+        </section></div>
+        <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Conversion opportunity</div>
+          ${iCard("Simplify checkout", "Reduce credit-check to 2 fields using CRM pre-fill (" + j.cohortLabel + " cohort).", "Est. lift", "+" + (9 + (seed % 4)) + "% conv.", `<button type="button" class="btn accent">Create experiment</button>`)}
+        </section></div>
+      </div>`;
+  }
+
+  function renderChurn() {
+    const rows = getChurnRows(filters);
+    const seed = filterSeed("churn");
+    const conf = 85 + (seed % 12);
+    const w1 = 28 + (seed % 10);
+    const explainName = rows[0] ? rows[0][0] : "Patel Family Plan";
+    return pageHead("churn") + pageFilterPanel("Filters", `${fd("riskTier", "Risk", "riskTier")}${fd("churnLob", "LOB", "churnLob")}${fd("segment", "Segment")}${fd("region", "Region")}`) + `
+      <div class="row churn-layout" style="margin-bottom:1px">
+        <div class="col" style="flex:1.6"><section class="panel churn-panel"><div class="panel-label">Churn watchlist (${rows.length} accounts)</div>
+          <table class="data-table"><thead><tr><th>Account</th><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Reason</th><th>Offer</th><th>SLA</th></tr></thead><tbody>
+            ${rows.map(r => `<tr><td><strong>${r[0]}</strong></td><td>${pill(r[1], r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td style="color:var(--ink-soft)">${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td></tr>`).join("")}
+          </tbody></table>
+          <div class="churn-panel-fill" aria-hidden="true"></div>
+        </section></div>
+        <div class="col"><section class="panel churn-panel"><div class="panel-label">Explainable AI — ${explainName}</div>
+          <div class="explain-block"><div class="block-sub" style="margin-bottom:10px">Model: Gradient-boosted churn · v4.2 · ${filterLabel("region", filters.region)}</div>
+          <table class="data-table"><thead><tr><th>Signal</th><th>Weight</th></tr></thead><tbody>
+            <tr><td>Data usage decline 30d</td><td>${barCell(w1 * 2.5)}${w1 + 6}%</td></tr>
+            <tr><td>Care escalations</td><td>${barCell(68)}27%</td></tr>
+            <tr><td>Competitor site visits</td><td>${barCell(48)}19%</td></tr>
+            <tr><td>Tenure</td><td>${barCell(30)}12%</td></tr>
+            <tr><td>Payment history</td><td>${barCell(20)}8%</td></tr>
+          </tbody></table>
+          <span class="tag accent" style="margin-top:10px;display:inline-block">Confidence: ${conf}%</span>
+          <div class="churn-panel-fill" aria-hidden="true"></div></div>
+        </section></div>
+      </div>`;
+  }
+
+  function renderOpportunity() {
+    const opps = getOpportunityData(filters);
+    const seed = filterSeed("opp");
+    const prop = 35 + (seed % 12);
+    return pageHead("opportunity") + pageFilterPanel("Filters", `${fd("oppType", "Type", "oppType")}${fd("region", "Region")}${fd("segment", "Segment")}${fd("period", "Period")}`) + `
+      <section class="panel"><div class="panel-label">Opportunity cards (${opps.length})</div><div class="cardgrid">
+        ${opps.map(o => iCard(o[0], o[1], "Priority: " + o[2], "Potential: " + o[3], `<button type="button" class="btn accent">View explanation</button><button type="button" class="btn ghost">Assign</button>`)).join("")}
+      </div></section>
+      <section class="panel"><div class="panel-label">AI explanation — ${opps[0] ? opps[0][0] : "Family plan cross-sell"}</div>
+        <div class="ai-summary"><p>Synthetic match for ${filterLabel("segment", filters.segment)} in ${filterLabel("region", filters.region)}: conversion propensity ${prop}% (${filterLabel("period", filters.period)}).</p></div>
+      </section>`;
+  }
+
+  function renderCommunities() {
+    const comms = getCommunitiesData(filters);
+    const seed = filterSeed("comm");
+    const focus = comms.find(c => c[0].includes("Family")) || comms[0];
+    return pageHead("communities") + pageFilterPanel("Community filters", `${fd("communityView", "View", "communityView")}${fd("region", "Region")}${fd("segment", "Segment")}${fd("period", "Period")}`) + `
+      <section class="panel"><div class="panel-label">AI-discovered communities (${comms.length})</div><div class="communities-cardgrid">
+        ${comms.map(c => iCard(c[0], c[1], `Pop. ${c[2]}`, `Rev. ${c[3]}`, `${pill(c[4], c[4])}<span class="tag">${c[5]} growth</span><button type="button" class="btn accent" style="margin-left:6px">Export to campaign</button>`)).join("")}
+      </div></section>
+      <div class="row behavior-layout" style="margin-bottom:1px">
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Community size over time</div>
+          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(6, [2], seed)}</div></div></div>
+        </section></div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Recommended actions — ${focus[0]}</div>
+          <div class="behavior-panel-content">
+            <div class="list-row">🎯 Bundle upsell — ${58 + (seed % 10)}% propensity match</div>
+            <div class="list-row">📩 Decision-maker billing summary email</div>
+            <div class="list-row">🛡️ Retention offers — ${focus[3]} revenue concentration</div>
+            <div class="behavior-panel-fill" aria-hidden="true"></div>
+          </div>
+        </section></div>
+      </div>`;
+  }
+
+  function renderStub(key) {
+    return pageHead(key) + globalFilterPanel() + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>Filters above apply globally in this demo. Full module coming in the roadmap — try Command and Predictive screens for interactive synthetic data.</p></div></section>`;
+  }
+
+  const RENDER = {
+    dashboard: renderDashboard,
+    c360: renderC360,
+    behavior: renderBehavior,
+    journey: renderJourney,
+    churn: renderChurn,
+    opportunity: renderOpportunity,
+    communities: renderCommunities,
+    copilot: () => renderStub("copilot"),
+    agents: () => renderStub("agents"),
+    command: () => renderStub("command"),
+  };
+
+  const railNav = document.getElementById("railNav");
+  NAV.forEach(g => {
+    const gl = document.createElement("div");
+    gl.className = "rail-group-label";
+    gl.textContent = g.group;
+    railNav.appendChild(gl);
+    g.items.forEach(n => {
+      const el = document.createElement("div");
+      el.className = "rail-item";
+      el.dataset.k = n.k;
+      el.innerHTML = `<span class="rail-ico">${n.ico}</span>${n.label}`;
+      el.addEventListener("click", () => selectScreen(n.k));
+      railNav.appendChild(el);
+    });
+  });
+
+  function selectScreen(key) {
+    currentScreen = key;
+    document.querySelectorAll(".rail-item").forEach(el => el.classList.toggle("active", el.dataset.k === key));
+    const render = RENDER[key];
+    document.getElementById("appContent").innerHTML = render ? render() : "";
+    document.title = META[key].title + " | ACL Digital";
+    document.querySelectorAll("[data-filter]").forEach(sel => {
+      sel.addEventListener("change", e => {
+        filters[e.target.dataset.filter] = e.target.value;
+        selectScreen(currentScreen);
+      });
+    });
+    window.scrollTo(0, 0);
+  }
+
+  selectScreen("dashboard");
+})();
+</script>
+</body>
+</html>
