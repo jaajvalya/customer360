@@ -1122,6 +1122,7 @@
     ]},
     { group: "Data & Connections", items: [
       { k: "datasources", ico: "11", label: "Manage Data Sources" },
+      { k: "governdata", ico: "12", label: "Govern Data" },
     ]},
   ];
 
@@ -1169,6 +1170,11 @@
       title: "Manage Data Sources",
       crumb: "Home / Data & Connections / Manage Data Sources",
       purpose: "Connect and govern CRM, billing, network, digital, and third-party feeds that power Customer Intelligence.",
+    },
+    governdata: {
+      title: "Govern Data",
+      crumb: "Home / Data & Connections / Govern Data",
+      purpose: "Define retention, quality rules, lineage, and access policies for connected customer data.",
     },
   };
 
@@ -2207,6 +2213,7 @@
     agents: () => renderStub("agents"),
     command: () => renderStub("command"),
     datasources: renderDataSources,
+    governdata: () => renderStub("governdata", true),
   };
 
   const railNav = document.getElementById("railNav");
