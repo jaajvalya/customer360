@@ -968,6 +968,85 @@
   }
   .screen-stub h2 { color: var(--acl-navy); margin: 0 0 8px; }
 
+  .ds-intro {
+    margin: 0 0 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .ds-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  @media (max-width: 720px) {
+    .ds-form-grid { grid-template-columns: 1fr; }
+  }
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .ds-field.span-2 { grid-column: 1 / -1; }
+  .ds-field-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .ds-input {
+    width: 100%;
+    border: var(--box-border);
+    border-radius: 0;
+    padding: 8px 10px;
+    font-size: 13px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .ds-input:focus {
+    outline: none;
+    border-color: var(--acl-cyan);
+  }
+  textarea.ds-input {
+    min-height: 88px;
+    resize: vertical;
+    font-family: var(--font);
+  }
+  .ds-hint {
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .ds-fields-panel {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .ds-fields-panel[hidden] { display: none !important; }
+  .ds-subhead {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  .ds-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ds-status {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .ds-status.ok { color: var(--success); }
+  .ds-status.err { color: var(--danger); }
+
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 0; }
 </style>
@@ -1784,6 +1863,324 @@
     return pageHead(key) + filters + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>${blurb}</p></div></section>`;
   }
 
+  const DS_SOURCE_OPTIONS = [
+    { v: "", l: "Select data source type…" },
+    { v: "cloud_rdbms", l: "Cloud RDBMS" },
+    { v: "aws", l: "AWS" },
+    { v: "azure", l: "Azure" },
+    { v: "gcp", l: "GCP" },
+    { v: "onprem_rdbms", l: "On-Premises RDBMS" },
+    { v: "file_upload", l: "File Upload" },
+  ];
+
+  const DS_AUTH_OPTIONS = [
+    { v: "", l: "Select authentication method…" },
+    { v: "api", l: "API" },
+    { v: "oauth", l: "OAuth" },
+    { v: "service_account", l: "Service account" },
+  ];
+
+  const DS_CONNECTION_FIELDS = {
+    "cloud_rdbms:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Cloud CRM warehouse" },
+      { id: "host", label: "Host / endpoint", placeholder: "db.example.cloud.com" },
+      { id: "port", label: "Port", placeholder: "5432", type: "number" },
+      { id: "database", label: "Database name", placeholder: "customer_intel" },
+      { id: "username", label: "Username", placeholder: "ci_readonly" },
+      { id: "password", label: "Password / API secret", type: "password", placeholder: "••••••••" },
+      { id: "sslMode", label: "SSL mode", placeholder: "require" },
+    ],
+    "cloud_rdbms:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Cloud CRM OAuth" },
+      { id: "tokenUrl", label: "OAuth token URL", placeholder: "https://login.provider.com/oauth2/token" },
+      { id: "clientId", label: "Client ID", placeholder: "Application (client) ID" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "scope", label: "Scope", placeholder: "openid profile database.read" },
+      { id: "dbHost", label: "Database host", placeholder: "db.example.cloud.com" },
+      { id: "database", label: "Database name", placeholder: "customer_intel" },
+    ],
+    "cloud_rdbms:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Cloud SQL service account" },
+      { id: "saEmail", label: "Service account ID / email", placeholder: "ci-reader@project.iam" },
+      { id: "privateKey", label: "Private key (PEM or JSON)", type: "textarea", span: 2, placeholder: "Paste key material…" },
+      { id: "host", label: "Database host", placeholder: "db.example.cloud.com" },
+      { id: "database", label: "Database name", placeholder: "customer_intel" },
+    ],
+    "aws:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. AWS RDS read replica" },
+      { id: "accessKeyId", label: "Access key ID", placeholder: "AKIA…" },
+      { id: "secretAccessKey", label: "Secret access key", type: "password", placeholder: "••••••••" },
+      { id: "region", label: "AWS region", placeholder: "us-east-1" },
+      { id: "resourceArn", label: "RDS / Aurora resource ARN", placeholder: "arn:aws:rds:…", span: 2 },
+    ],
+    "aws:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. AWS SSO OAuth" },
+      { id: "authorizeUrl", label: "OAuth authorize URL", placeholder: "https://…/oauth2/authorize" },
+      { id: "tokenUrl", label: "OAuth token URL", placeholder: "https://…/oauth2/token" },
+      { id: "clientId", label: "Client ID", placeholder: "OAuth client identifier" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "roleArn", label: "IAM role ARN (optional)", placeholder: "arn:aws:iam::…:role/…", span: 2 },
+    ],
+    "aws:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Cross-account RDS" },
+      { id: "roleArn", label: "IAM role ARN", placeholder: "arn:aws:iam::…:role/CustomerIntelRead" },
+      { id: "externalId", label: "External ID", placeholder: "unique-external-id" },
+      { id: "sessionName", label: "Session name", placeholder: "customer360-ingest" },
+      { id: "region", label: "AWS region", placeholder: "us-east-1" },
+      { id: "rdsEndpoint", label: "RDS endpoint", placeholder: "mydb.cluster-….rds.amazonaws.com", span: 2 },
+    ],
+    "azure:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Azure SQL API auth" },
+      { id: "server", label: "SQL server FQDN", placeholder: "myserver.database.windows.net" },
+      { id: "database", label: "Database name", placeholder: "CustomerIntel" },
+      { id: "sqlUser", label: "SQL login", placeholder: "ci_reader" },
+      { id: "sqlPassword", label: "SQL password", type: "password", placeholder: "••••••••" },
+      { id: "subscriptionId", label: "Subscription ID", placeholder: "00000000-0000-0000-0000-000000000000", span: 2 },
+    ],
+    "azure:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Azure AD OAuth" },
+      { id: "tenantId", label: "Tenant ID", placeholder: "Directory (tenant) ID" },
+      { id: "clientId", label: "Application (client) ID", placeholder: "App registration client ID" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "redirectUri", label: "Redirect URI", placeholder: "https://app.example.com/oauth/callback" },
+      { id: "server", label: "SQL server FQDN", placeholder: "myserver.database.windows.net" },
+      { id: "database", label: "Database name", placeholder: "CustomerIntel" },
+    ],
+    "azure:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Managed identity SQL" },
+      { id: "managedIdentityId", label: "Managed identity client ID", placeholder: "User-assigned identity client ID" },
+      { id: "server", label: "SQL server FQDN", placeholder: "myserver.database.windows.net" },
+      { id: "database", label: "Database name", placeholder: "CustomerIntel" },
+      { id: "subscriptionId", label: "Subscription ID", placeholder: "00000000-0000-0000-0000-000000000000" },
+    ],
+    "gcp:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Cloud SQL API" },
+      { id: "projectId", label: "Project ID", placeholder: "customer-intel-prod" },
+      { id: "instanceConn", label: "Instance connection name", placeholder: "project:region:instance", span: 2 },
+      { id: "dbUser", label: "Database user", placeholder: "ci_reader" },
+      { id: "dbPassword", label: "Database password", type: "password", placeholder: "••••••••" },
+    ],
+    "gcp:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. GCP OAuth" },
+      { id: "clientId", label: "OAuth client ID", placeholder: "….apps.googleusercontent.com" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "refreshToken", label: "Refresh token", type: "password", placeholder: "Optional after consent" },
+      { id: "projectId", label: "Project ID", placeholder: "customer-intel-prod" },
+      { id: "instanceConn", label: "Instance connection name", placeholder: "project:region:instance", span: 2 },
+    ],
+    "gcp:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. GCP service account" },
+      { id: "projectId", label: "Project ID", placeholder: "customer-intel-prod" },
+      { id: "saJson", label: "Service account JSON key", type: "textarea", span: 2, placeholder: "Paste JSON key file contents…" },
+      { id: "instanceConn", label: "Instance connection name", placeholder: "project:region:instance", span: 2 },
+      { id: "database", label: "Database name", placeholder: "customer_intel" },
+    ],
+    "onprem_rdbms:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. On-prem billing DB" },
+      { id: "host", label: "Host", placeholder: "sqlcorp.internal" },
+      { id: "port", label: "Port", placeholder: "1433", type: "number" },
+      { id: "database", label: "Database name", placeholder: "BSS_Billing" },
+      { id: "username", label: "Username", placeholder: "DOMAIN\\ci_reader" },
+      { id: "password", label: "Password", type: "password", placeholder: "••••••••" },
+      { id: "jdbcOptions", label: "JDBC / connection options", placeholder: "encrypt=true;trustServerCertificate=false", span: 2 },
+    ],
+    "onprem_rdbms:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. On-prem AD OAuth" },
+      { id: "issuerUrl", label: "OAuth issuer URL", placeholder: "https://login.company.com/" },
+      { id: "clientId", label: "Client ID", placeholder: "Application ID" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "dbHost", label: "Database host", placeholder: "sqlcorp.internal" },
+      { id: "database", label: "Database name", placeholder: "BSS_Billing" },
+      { id: "dbUserMap", label: "DB user mapping claim", placeholder: "upn or preferred_username", span: 2 },
+    ],
+    "onprem_rdbms:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Kerberos service login" },
+      { id: "servicePrincipal", label: "Service account / principal", placeholder: "svc_customer360@CORP.LOCAL" },
+      { id: "keytabPath", label: "Keytab path or secret ref", placeholder: "/secrets/ci.keytab" },
+      { id: "host", label: "Database host", placeholder: "sqlcorp.internal" },
+      { id: "database", label: "Database name", placeholder: "BSS_Billing" },
+      { id: "authPlugin", label: "Auth plugin / driver", placeholder: "Kerberos / GSSAPI", span: 2 },
+    ],
+    "file_upload:api": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Partner file API" },
+      { id: "apiEndpoint", label: "Upload API endpoint", placeholder: "https://files.partner.com/v1/upload", span: 2 },
+      { id: "apiKey", label: "API key", type: "password", placeholder: "••••••••" },
+      { id: "fileTypes", label: "Allowed file types", placeholder: "csv, parquet, json" },
+      { id: "maxSizeMb", label: "Max file size (MB)", placeholder: "512", type: "number" },
+    ],
+    "file_upload:oauth": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. SharePoint / OneDrive OAuth" },
+      { id: "authorizeUrl", label: "OAuth authorize URL", placeholder: "https://login.microsoftonline.com/…/authorize" },
+      { id: "tokenUrl", label: "OAuth token URL", placeholder: "https://login.microsoftonline.com/…/token" },
+      { id: "clientId", label: "Client ID", placeholder: "Application ID" },
+      { id: "clientSecret", label: "Client secret", type: "password", placeholder: "••••••••" },
+      { id: "folderPath", label: "Folder / library path", placeholder: "/sites/CI/Shared Documents/inbound", span: 2 },
+    ],
+    "file_upload:service_account": [
+      { id: "connName", label: "Connection name", placeholder: "e.g. Blob storage account" },
+      { id: "storageAccount", label: "Storage account / bucket", placeholder: "custinteluploads" },
+      { id: "container", label: "Container / prefix", placeholder: "inbound/churn-feeds" },
+      { id: "accessKey", label: "Access key or SAS token", type: "password", placeholder: "••••••••", span: 2 },
+      { id: "region", label: "Region (if applicable)", placeholder: "us-east-1" },
+    ],
+  };
+
+  function dsSelectOptions(options, id) {
+    return options.map(o => `<option value="${o.v}">${o.l}</option>`).join("");
+  }
+
+  function renderDataSources() {
+    return pageHead("datasources") + `
+      <section class="panel">
+        <div class="panel-label">Data source configuration</div>
+        <p class="ds-intro">Select a source type and authentication method. Connection fields update automatically for you to review and save.</p>
+        <div class="ds-form-grid">
+          <label class="fselect-wrap">
+            <span class="fselect-label">Data source type</span>
+            <select class="fselect" id="dsSourceType" aria-label="Data source type">${dsSelectOptions(DS_SOURCE_OPTIONS)}</select>
+          </label>
+          <label class="fselect-wrap">
+            <span class="fselect-label">Authentication method</span>
+            <select class="fselect" id="dsAuthType" aria-label="Authentication method" disabled>${dsSelectOptions(DS_AUTH_OPTIONS)}</select>
+          </label>
+        </div>
+        <div id="dsFieldsPanel" class="ds-fields-panel" hidden>
+          <p class="ds-subhead" id="dsFieldsTitle">Connection parameters</p>
+          <div id="dsFields" class="ds-form-grid"></div>
+          <div class="ds-actions">
+            <button type="button" class="btn ghost" id="dsResetBtn">Reset</button>
+            <button type="button" class="btn accent" id="dsTestBtn">Test connection</button>
+            <button type="button" class="btn primary" id="dsSaveBtn">Save connection</button>
+          </div>
+          <p class="ds-status" id="dsStatus" role="status" aria-live="polite"></p>
+        </div>
+      </section>`;
+  }
+
+  function dsFieldKey(source, auth) {
+    return source && auth ? source + ":" + auth : "";
+  }
+
+  function dsSourceLabel(v) {
+    const o = DS_SOURCE_OPTIONS.find(x => x.v === v);
+    return o ? o.l : "";
+  }
+
+  function dsAuthLabel(v) {
+    const o = DS_AUTH_OPTIONS.find(x => x.v === v);
+    return o ? o.l : "";
+  }
+
+  function renderDsConnectionFields() {
+    const sourceEl = document.getElementById("dsSourceType");
+    const authEl = document.getElementById("dsAuthType");
+    const panel = document.getElementById("dsFieldsPanel");
+    const fieldsEl = document.getElementById("dsFields");
+    const titleEl = document.getElementById("dsFieldsTitle");
+    const statusEl = document.getElementById("dsStatus");
+    if (!sourceEl || !authEl || !panel || !fieldsEl) return;
+
+    const source = sourceEl.value;
+    const auth = authEl.value;
+    if (statusEl) {
+      statusEl.textContent = "";
+      statusEl.className = "ds-status";
+    }
+
+    authEl.disabled = !source;
+    if (!source) {
+      authEl.value = "";
+      panel.hidden = true;
+      fieldsEl.innerHTML = "";
+      return;
+    }
+
+    if (!auth) {
+      panel.hidden = true;
+      fieldsEl.innerHTML = "";
+      return;
+    }
+
+    const spec = DS_CONNECTION_FIELDS[dsFieldKey(source, auth)];
+    if (!spec) {
+      panel.hidden = true;
+      fieldsEl.innerHTML = "";
+      return;
+    }
+
+    titleEl.textContent = dsSourceLabel(source) + " · " + dsAuthLabel(auth) + " — connection parameters";
+    fieldsEl.innerHTML = spec.map(f => {
+      const span = f.span === 2 ? " ds-field span-2" : " ds-field";
+      const type = f.type || "text";
+      const ph = f.placeholder ? ` placeholder="${f.placeholder.replace(/"/g, "&quot;")}"` : "";
+      const id = "ds_" + f.id;
+      let control;
+      if (type === "textarea") {
+        control = `<textarea class="ds-input" id="${id}" name="${f.id}"${ph} aria-label="${f.label}"></textarea>`;
+      } else {
+        control = `<input class="ds-input" id="${id}" name="${f.id}" type="${type}"${ph} aria-label="${f.label}">`;
+      }
+      const hint = f.hint ? `<span class="ds-hint">${f.hint}</span>` : "";
+      return `<div class="${span.trim()}"><label class="ds-field-label" for="${id}">${f.label}</label>${control}${hint}</div>`;
+    }).join("");
+    panel.hidden = false;
+  }
+
+  function initDataSourcesPage() {
+    const sourceEl = document.getElementById("dsSourceType");
+    const authEl = document.getElementById("dsAuthType");
+    if (!sourceEl || !authEl) return;
+
+    sourceEl.addEventListener("change", () => {
+      authEl.value = "";
+      renderDsConnectionFields();
+    });
+    authEl.addEventListener("change", renderDsConnectionFields);
+
+    const testBtn = document.getElementById("dsTestBtn");
+    const saveBtn = document.getElementById("dsSaveBtn");
+    const resetBtn = document.getElementById("dsResetBtn");
+    const statusEl = document.getElementById("dsStatus");
+
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        sourceEl.value = "";
+        authEl.value = "";
+        authEl.disabled = true;
+        renderDsConnectionFields();
+      });
+    }
+
+    function demoStatus(msg, ok) {
+      if (!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.className = "ds-status " + (ok ? "ok" : "err");
+    }
+
+    if (testBtn) {
+      testBtn.addEventListener("click", () => {
+        if (!sourceEl.value || !authEl.value) {
+          demoStatus("Select a data source type and authentication method first.", false);
+          return;
+        }
+        demoStatus("Connection test succeeded (demo). Parameters validated locally.", true);
+      });
+    }
+    if (saveBtn) {
+      saveBtn.addEventListener("click", () => {
+        if (!sourceEl.value || !authEl.value) {
+          demoStatus("Select a data source type and authentication method first.", false);
+          return;
+        }
+        const nameEl = document.querySelector("#dsFields [name='connName']");
+        const name = nameEl && nameEl.value.trim() ? nameEl.value.trim() : dsSourceLabel(sourceEl.value);
+        demoStatus('Connection "' + name + '" saved (demo).', true);
+      });
+    }
+
+    renderDsConnectionFields();
+  }
+
   const RENDER = {
     dashboard: renderDashboard,
     c360: renderC360,
@@ -1795,7 +2192,7 @@
     copilot: () => renderStub("copilot"),
     agents: () => renderStub("agents"),
     command: () => renderStub("command"),
-    datasources: () => renderStub("datasources", true),
+    datasources: renderDataSources,
   };
 
   const railNav = document.getElementById("railNav");
@@ -1826,6 +2223,7 @@
         selectScreen(currentScreen);
       });
     });
+    if (key === "datasources") initDataSourcesPage();
     window.scrollTo(0, 0);
   }
 
