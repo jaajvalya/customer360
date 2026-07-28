@@ -1776,8 +1776,12 @@
       </div>`;
   }
 
-  function renderStub(key) {
-    return pageHead(key) + globalFilterPanel() + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>Filters above apply globally in this demo. Full module coming in the roadmap-try Command and Predictive screens for interactive synthetic data.</p></div></section>`;
+  function renderStub(key, skipGlobalFilters) {
+    const filters = skipGlobalFilters ? "" : globalFilterPanel();
+    const blurb = skipGlobalFilters
+      ? "Full module coming in the roadmap-connect CRM, billing, network, and partner feeds in this demo."
+      : "Filters above apply globally in this demo. Full module coming in the roadmap-try Command and Predictive screens for interactive synthetic data.";
+    return pageHead(key) + filters + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>${blurb}</p></div></section>`;
   }
 
   const RENDER = {
@@ -1791,7 +1795,7 @@
     copilot: () => renderStub("copilot"),
     agents: () => renderStub("agents"),
     command: () => renderStub("command"),
-    datasources: () => renderStub("datasources"),
+    datasources: () => renderStub("datasources", true),
   };
 
   const railNav = document.getElementById("railNav");
