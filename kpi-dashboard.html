@@ -349,6 +349,10 @@
     font-size: 12px;
     color: var(--ink-soft);
   }
+  .ds-form-grid .fselect-wrap {
+    display: flex;
+    width: 100%;
+  }
   .fselect-wrap:hover { border-color: rgba(0, 163, 224, 0.45); }
   .fselect-wrap:focus-within {
     border-color: var(--acl-cyan);
@@ -358,16 +362,26 @@
     font-weight: 500;
     color: var(--ink);
     white-space: nowrap;
+    flex-shrink: 0;
   }
   .fselect {
     border: none;
-    background: #ffffff;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6578' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    background-size: 12px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     font-family: var(--font);
     font-size: 12px;
     color: var(--acl-navy);
     cursor: pointer;
-    padding: 2px 4px;
-    min-width: 120px;
+    padding: 2px 22px 2px 4px;
+    flex: 1;
+    min-width: 5rem;
+    text-align: left;
   }
   .fselect:focus { outline: none; }
   .tag {
