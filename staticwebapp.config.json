@@ -1,0 +1,6 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/kpi-dashboard.html", "/c360.html", "/*.{css,js,png,jpg,jpeg,gif,webp,svg,ico,woff,woff2}"]
+  }
+}
