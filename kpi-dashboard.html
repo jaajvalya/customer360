@@ -1061,6 +1061,67 @@
   .ds-status.ok { color: var(--success); }
   .ds-status.err { color: var(--danger); }
 
+  .govern-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 1000px) {
+    .govern-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) {
+    .govern-grid { grid-template-columns: 1fr; }
+  }
+  .govern-tile {
+    border: var(--box-border);
+    background: #ffffff;
+    padding: 18px 16px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    width: 100%;
+  }
+  .govern-tile:hover {
+    border-color: var(--acl-cyan);
+    box-shadow: 0 2px 8px rgba(0, 51, 102, 0.06);
+  }
+  .govern-tile:focus-visible {
+    outline: 2px solid var(--acl-cyan);
+    outline-offset: 2px;
+  }
+  .govern-tile-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    border: var(--box-border);
+    margin-bottom: 14px;
+  }
+  .govern-tile-icon img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  .govern-tile h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--acl-navy);
+  }
+  .govern-tile p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 0; }
 </style>
@@ -2201,6 +2262,71 @@
     renderDsConnectionFields();
   }
 
+  const LUCIDE_ICON_CDN = "https://cdn.jsdelivr.net/npm/lucide-static@0.469.0/icons";
+
+  const GOVERN_DATA_TILES = [
+    {
+      id: "validate-quality",
+      title: "Validate Data Quality",
+      desc: "Run completeness, freshness, and consistency checks on connected feeds before they power intelligence models.",
+      icon: "shield-check",
+    },
+    {
+      id: "classify-data",
+      title: "Classify Data",
+      desc: "Apply sensitivity labels, PII tagging, and domain classification aligned to policy and regulatory requirements.",
+      icon: "tags",
+    },
+    {
+      id: "model-data",
+      title: "Model Data",
+      desc: "Define entities, relationships, and semantic models that unify subscriber, product, and network attributes.",
+      icon: "network",
+    },
+    {
+      id: "data-mapper",
+      title: "Data Mapper",
+      desc: "Map source schemas to the Customer Intelligence canonical model with transforms and lineage tracking.",
+      icon: "git-compare-arrows",
+    },
+  ];
+
+  function governIconUrl(iconName) {
+    return LUCIDE_ICON_CDN + "/" + iconName + ".svg";
+  }
+
+  function renderGovernData() {
+    const tiles = GOVERN_DATA_TILES.map(t => `
+      <button type="button" class="govern-tile" data-govern-tile="${t.id}" aria-label="${t.title}">
+        <span class="govern-tile-icon" aria-hidden="true">
+          <img src="${governIconUrl(t.icon)}" alt="" width="24" height="24" loading="lazy" decoding="async">
+        </span>
+        <h3>${t.title}</h3>
+        <p>${t.desc}</p>
+      </button>`).join("");
+
+    return pageHead("governdata") + `
+      <section class="panel">
+        <div class="panel-label">Data governance</div>
+        <p class="ds-intro">Choose a capability to configure rules, mappings, and quality standards for customer data across connected sources.</p>
+        <div class="govern-grid">${tiles}</div>
+        <p class="ds-status" id="governTileStatus" role="status" aria-live="polite"></p>
+      </section>`;
+  }
+
+  function initGovernDataPage() {
+    const statusEl = document.getElementById("governTileStatus");
+    document.querySelectorAll("[data-govern-tile]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tile = GOVERN_DATA_TILES.find(t => t.id === btn.dataset.governTile);
+        if (statusEl && tile) {
+          statusEl.textContent = tile.title + " — full workflow coming in the roadmap (demo).";
+          statusEl.className = "ds-status ok";
+        }
+      });
+    });
+  }
+
   const RENDER = {
     dashboard: renderDashboard,
     c360: renderC360,
@@ -2213,7 +2339,7 @@
     agents: () => renderStub("agents"),
     command: () => renderStub("command"),
     datasources: renderDataSources,
-    governdata: () => renderStub("governdata", true),
+    governdata: renderGovernData,
   };
 
   const railNav = document.getElementById("railNav");
@@ -2245,6 +2371,7 @@
       });
     });
     if (key === "datasources") initDataSourcesPage();
+    if (key === "governdata") initGovernDataPage();
     window.scrollTo(0, 0);
   }
 
