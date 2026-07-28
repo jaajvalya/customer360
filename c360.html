@@ -2,19 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Verizon Customer Intelligence AI — Wireframe Spec</title>
+<title>Verizon Customer Intelligence AI-Wireframe Spec</title>
 <style>
   :root{
-    --ink:#1a1c20; --ink-soft:#4a4f57; --line:#c7cbd1; --line-soft:#e2e5e9;
-    --paper:#ffffff; --panel:#fafbfc; --panel-2:#f2f4f6;
-    --accent:#2f5fdc; --accent-soft:#e8edfc;
-    --mono: "IBM Plex Mono","SFMono-Regular",Menlo,monospace;
-    --sans: "Inter","Helvetica Neue",Arial,sans-serif;
-    --r:10px; --r-lg:16px; --sp:8px;
+    --ink:#1a2332; --ink-soft:#5a6578; --line:#dce3ec; --line-soft:#eef2f7;
+    --paper:#ffffff; --panel:#fafbfc; --panel-2:#f7f9fc;
+    --accent:#0066b3; --accent-soft:rgba(0,163,224,0.12);
+    --font: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --mono: var(--font);
+    --sans: var(--font);
+    --r:0; --r-lg:0; --sp:8px;
+    --box-border: 1px solid var(--line);
   }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--panel-2);font-size:13px;}
-  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  html{font-family:var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+  body{margin:0;font-family:var(--font);color:var(--ink);background:var(--panel-2);font-size:14px;line-height:1.5;}
+  button,input,select,textarea{font-family:inherit;font-size:inherit;}
+  .app,
+  .app *{border-radius:0 !important;}
+  .donut,
+  .donut::after{border-radius:50% !important;}
+  .eyebrow{font-family:var(--font);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
   .app{display:flex;min-height:100vh;}
 
   /* ---------- LEFT NAV ---------- */
@@ -22,18 +30,18 @@
   .rail.collapsed{width:64px;}
   .rail.collapsed .rail-label{display:none;}
   .rail-brand{display:flex;align-items:center;gap:8px;padding:18px 16px;border-bottom:1px solid var(--line);}
-  .brand-mark{width:26px;height:26px;border-radius:6px;background:var(--ink);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;font-family:var(--mono);}
+  .brand-mark{width:26px;height:26px;border-radius:6px;background:var(--ink);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;font-family:var(--font);}
   .brand-text{line-height:1.15;}
   .brand-text b{display:block;font-size:12px;}
   .brand-text span{font-size:9px;color:var(--ink-soft);}
   .rail-toggle{margin-left:auto;width:22px;height:22px;border:1px solid var(--line);border-radius:6px;background:var(--panel);cursor:pointer;font-size:11px;color:var(--ink-soft);}
   .rail-scroll{overflow-y:auto;padding:10px 8px;flex:1;}
-  .rail-group-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:#9aa0a8;text-transform:uppercase;padding:12px 10px 4px;}
+  .rail-group-label{font-family:var(--font);font-size:9px;letter-spacing:.08em;color:#9aa0a8;text-transform:uppercase;padding:12px 10px 4px;}
   .rail-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--ink-soft);font-size:12.5px;margin-bottom:2px;border:1px solid transparent;}
   .rail-item:hover{background:var(--panel-2);}
   .rail-item.active{background:var(--accent-soft);color:var(--accent);border-color:#c9d8fb;font-weight:600;}
-  .rail-ico{width:18px;height:18px;flex:none;border-radius:5px;border:1.4px solid currentColor;opacity:.8;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--mono);}
-  .rail-num{margin-left:auto;font-family:var(--mono);font-size:9px;color:#b8bcc2;}
+  .rail-ico{width:18px;height:18px;flex:none;border-radius:5px;border:1.4px solid currentColor;opacity:.8;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:var(--font);}
+  .rail-num{margin-left:auto;font-family:var(--font);font-size:9px;color:#b8bcc2;}
   .rail-item.active .rail-num{color:var(--accent);}
   .rail-foot{padding:12px;border-top:1px solid var(--line);font-size:10.5px;color:var(--ink-soft);}
 
@@ -43,61 +51,71 @@
   .search-fake{flex:1;max-width:420px;height:32px;border:1px solid var(--line);border-radius:8px;background:var(--panel);display:flex;align-items:center;padding:0 10px;color:#9aa0a8;font-size:11.5px;gap:6px;}
   .topbar-spacer{flex:1;}
   .top-ico{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-soft);position:relative;flex:none;}
-  .top-ico.copilot{background:var(--ink);color:#fff;border-color:var(--ink);font-family:var(--mono);}
+  .top-ico.copilot{background:var(--ink);color:#fff;border-color:var(--ink);font-family:var(--font);}
   .dot-badge{position:absolute;top:-3px;right:-3px;width:7px;height:7px;border-radius:50%;background:var(--accent);border:1.5px solid #fff;}
   .avatar{width:30px;height:30px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);}
 
   .content{padding:24px;max-width:1280px;width:100%;margin:0 auto;}
   .page-head{margin-bottom:18px;}
-  .breadcrumb{font-family:var(--mono);font-size:10px;color:#9aa0a8;margin-bottom:8px;}
-  .page-title{font-size:22px;font-weight:700;letter-spacing:-.01em;margin:0 0 4px;}
+  .breadcrumb{font-family:var(--font);font-size:10px;color:#9aa0a8;margin-bottom:8px;}
+  .page-title{font-size:22px;font-weight:600;letter-spacing:0;margin:0 0 4px;}
   .page-purpose{color:var(--ink-soft);font-size:12.5px;max-width:760px;line-height:1.5;}
-  .persona-chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:10.5px;font-family:var(--mono);border:1px dashed var(--line);border-radius:20px;padding:4px 10px;color:var(--ink-soft);}
+  .persona-chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:10.5px;font-family:var(--font);border:1px dashed var(--line);border-radius:20px;padding:4px 10px;color:var(--ink-soft);}
 
-  .wf{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;margin-bottom:18px;}
-  .wf-label{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#9aa0a8;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .wf{background:var(--paper);border:var(--box-border);border-radius:0;padding:20px;margin-bottom:18px;}
+  .wf-label{font-family:var(--font);font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
   .wf-label::after{content:"";flex:1;height:1px;background:var(--line-soft);}
 
   /* generic wireframe blocks */
   .row{display:flex;gap:12px;margin-bottom:12px;}
   .row:last-child{margin-bottom:0;}
   .col{flex:1;min-width:0;}
-  .block{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:12px;position:relative;}
+  .block{border:var(--box-border);border-radius:0;background:var(--panel);padding:12px;position:relative;}
   .block-title{font-size:11px;font-weight:600;margin-bottom:2px;}
-  .block-sub{font-size:9.5px;color:#9aa0a8;font-family:var(--mono);}
+  .block-sub{font-size:9.5px;color:#9aa0a8;font-family:var(--font);}
   .placeholder-x{position:relative;border:1px dashed var(--line);border-radius:8px;background:repeating-linear-gradient(135deg,#f4f5f6,#f4f5f6 6px,#fff 6px,#fff 12px);}
   .placeholder-x::before,.placeholder-x::after{content:"";position:absolute;inset:0;}
-  .tag{display:inline-block;font-family:var(--mono);font-size:9px;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink-soft);margin-right:4px;background:#fff;}
+  .tag{display:inline-block;font-family:var(--font);font-size:9px;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink-soft);margin-right:4px;background:#fff;}
   .tag.accent{border-color:#c9d8fb;color:var(--accent);background:var(--accent-soft);}
 
-  .kpi{border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--panel);}
-  .kpi .k-label{font-size:9.5px;color:var(--ink-soft);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;}
+  .kpi{border:var(--box-border);border-radius:0;padding:12px;background:var(--panel);}
+  .kpi .k-label{font-size:9.5px;color:var(--ink-soft);font-family:var(--font);text-transform:uppercase;letter-spacing:.04em;}
   .kpi .k-val{font-size:19px;font-weight:700;margin:4px 0 2px;}
   .kpi .k-delta{font-size:10px;color:var(--ink-soft);}
   .kpi .k-delta.up{color:#2f7d4f;}
   .kpi .k-delta.down{color:#c14545;}
   .kpi .k-spark{height:22px;margin-top:8px;display:flex;align-items:flex-end;gap:2px;}
-  .kpi .k-spark i{flex:1;background:var(--line);border-radius:1px;}
-
-  .chart-box{height:150px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:10px;display:flex;flex-direction:column;}
+  .kpi .k-spark i{flex:1;background:var(--line);border-radius:0;opacity:1;}
+  .bars{display:flex;align-items:flex-end;gap:6px;height:100%;padding-top:6px;}
+  .bars i{flex:1;background:linear-gradient(180deg,#dfe3e8,#c7cbd1);border-radius:0;min-height:8%;opacity:1;}
+  .bars i.hi{background:linear-gradient(180deg,var(--accent-soft),#b9cbf7)!important;}
+  .donut{width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--accent) 0 34%,#b9c1cc 34% 62%,#dfe3e8 62% 100%);margin:4px auto;position:relative;}
+  .chart-box{height:150px;border:var(--box-border);border-radius:0;background:var(--panel);padding:10px;display:flex;flex-direction:column;}
   .chart-box .cb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
   .chart-body{flex:1;position:relative;}
-  .bars{display:flex;align-items:flex-end;gap:6px;height:100%;padding-top:6px;}
-  .bars i{flex:1;background:linear-gradient(180deg,#dfe3e8,#c7cbd1);border-radius:3px 3px 0 0;}
-  .bars i.hi{background:linear-gradient(180deg,var(--accent-soft),#b9cbf7);}
-  .donut{width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--accent) 0 34%, #b9c1cc 34% 62%, #dfe3e8 62% 100%);margin:4px auto;position:relative;}
+  .chart-body-stacked{display:flex;flex-direction:column;flex:1;min-height:0;}
+  .chart-body-stacked>.bars,.chart-body-stacked>.heat,.chart-body-stacked>.line-chart,.chart-body-stacked>.donut-layout{flex:1;min-height:48px;}
+  .donut-layout{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+  .chart-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line-soft);font-size:10px;color:var(--ink-soft);flex-shrink:0;}
+  .chart-legend.compact{margin-top:6px;padding-top:6px;}
+  .chart-legend.categories{border-top:none;padding-top:0;margin-top:4px;}
+  .chart-legend-item{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+  .chart-legend-swatch{width:10px;height:10px;flex-shrink:0;border:1px solid var(--line);box-sizing:border-box;}
+  .chart-legend-swatch.line{width:18px;height:0;border:none;border-top:2px solid;background:transparent!important;}
+  .chart-legend-swatch.gradient{width:52px;height:8px;border:1px solid var(--line);background:linear-gradient(90deg,rgba(0,102,179,0.12),rgba(0,102,179,0.88))!important;}
+  .kpi .chart-legend{margin-top:8px;padding-top:6px;font-size:9px;}
   .donut::after{content:"";position:absolute;inset:14px;background:#fff;border-radius:50%;}
   .line-chart{width:100%;height:100%;}
   .heat{display:grid;gap:3px;height:100%;}
   .heat i{border-radius:2px;background:var(--line-soft);}
 
-  table.wtable{width:100%;border-collapse:collapse;font-size:11px;}
-  table.wtable th{text-align:left;font-family:var(--mono);font-size:9px;text-transform:uppercase;color:#9aa0a8;font-weight:500;border-bottom:1px solid var(--line);padding:6px 8px;}
+  table.wtable{width:100%;border-collapse:collapse;font-size:11px;border:var(--box-border);}
+  table.wtable th{text-align:left;font-family:var(--font);font-size:11px;text-transform:uppercase;color:var(--ink-soft);font-weight:600;border-bottom:1px solid var(--line);padding:6px 8px;}
   table.wtable td{padding:8px;border-bottom:1px solid var(--line-soft);color:var(--ink);}
   table.wtable tr:last-child td{border-bottom:none;}
   .bar-cell{height:6px;border-radius:3px;background:var(--line-soft);position:relative;overflow:hidden;width:60px;display:inline-block;vertical-align:middle;}
   .bar-cell i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:3px;}
-  .pill{font-size:9.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);font-family:var(--mono);}
+  .pill{font-size:9.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);font-family:var(--font);}
   .pill.high{border-color:#e5b9b9;color:#c14545;background:#fbefef;}
   .pill.med{border-color:#e9d8ae;color:#a8791b;background:#fbf5e6;}
   .pill.low{border-color:#bfe0c9;color:#2f7d4f;background:#edf8f1;}
@@ -105,13 +123,13 @@
   .cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
   .cardgrid.c2{grid-template-columns:repeat(2,1fr);}
   .cardgrid.c4{grid-template-columns:repeat(4,1fr);}
-  .icard{border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--panel);}
+  .icard{border:var(--box-border);border-radius:0;padding:12px;background:var(--panel);}
   .icard h5{margin:0 0 4px;font-size:11.5px;}
   .icard p{margin:0 0 8px;font-size:10px;color:var(--ink-soft);line-height:1.4;}
-  .icard .meta{display:flex;justify-content:space-between;font-size:9.5px;font-family:var(--mono);color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:6px;}
+  .icard .meta{display:flex;justify-content:space-between;font-size:9.5px;font-family:var(--font);color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:6px;}
   .icard .btnrow{display:flex;gap:6px;margin-top:8px;}
 
-  .btn{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:default;}
+  .btn{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:5px 10px;border-radius:0;border:var(--box-border);background:#fff;color:var(--ink);cursor:default;}
   .btn.primary{background:var(--ink);border-color:var(--ink);color:#fff;}
   .btn.accent{background:var(--accent);border-color:var(--accent);color:#fff;}
   .btn.ghost{background:transparent;}
@@ -127,7 +145,7 @@
   .graph-canvas{height:280px;border:1px solid var(--line);border-radius:var(--r);background:
       radial-gradient(circle at 20% 30%, #eef1f4 0, transparent 40%),
       var(--panel);position:relative;overflow:hidden;}
-  .gnode{position:absolute;border-radius:50%;background:#fff;border:1.6px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:8px;font-family:var(--mono);text-align:center;}
+  .gnode{position:absolute;border-radius:50%;background:#fff;border:1.6px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:8px;font-family:var(--font);text-align:center;}
   .gnode.center{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700;}
   .gedge{position:absolute;height:1px;background:var(--line);transform-origin:0 0;}
 
@@ -138,14 +156,14 @@
   .t-line{position:absolute;top:6px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0;}
   .t-step:first-child .t-line{display:none;}
   .t-name{font-size:10px;font-weight:600;}
-  .t-sub{font-size:9px;color:var(--ink-soft);font-family:var(--mono);}
+  .t-sub{font-size:9px;color:var(--ink-soft);font-family:var(--font);}
 
   .chat-shell{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);height:280px;display:flex;flex-direction:column;}
   .chat-log{flex:1;padding:12px;overflow:hidden;display:flex;flex-direction:column;gap:10px;}
   .bubble{max-width:78%;padding:8px 10px;border-radius:10px;font-size:11px;line-height:1.4;}
   .bubble.user{align-self:flex-end;background:var(--ink);color:#fff;border-radius:10px 10px 2px 10px;}
   .bubble.ai{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px 10px 10px 2px;}
-  .bubble.ai .cite{display:block;margin-top:6px;font-family:var(--mono);font-size:8.5px;color:var(--accent);}
+  .bubble.ai .cite{display:block;margin-top:6px;font-family:var(--font);font-size:8.5px;color:var(--accent);}
   .chat-input{border-top:1px solid var(--line);display:flex;align-items:center;padding:8px 10px;gap:8px;}
   .chat-input .fake-input{flex:1;height:28px;border:1px solid var(--line);border-radius:7px;background:#fff;}
 
@@ -161,13 +179,13 @@
   .annot-tab{padding:10px 14px;font-size:11px;font-weight:600;color:var(--ink-soft);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
   .annot-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:#fff;}
   .annot-body{padding:18px 20px;}
-  .annot-body h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--mono);color:var(--ink-soft);}
+  .annot-body h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--font);color:var(--ink-soft);}
   .annot-body ul{margin:0 0 14px;padding-left:16px;}
   .annot-body li{margin-bottom:5px;font-size:12px;line-height:1.5;}
   .annot-body p{font-size:12px;line-height:1.6;margin:0 0 14px;}
   .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px;}
   .ai-card{border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--panel);}
-  .ai-card .ai-kind{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--accent);letter-spacing:.05em;margin-bottom:4px;}
+  .ai-card .ai-kind{font-family:var(--font);font-size:9px;text-transform:uppercase;color:var(--accent);letter-spacing:.05em;margin-bottom:4px;}
   .ai-card p{margin:0;font-size:11.5px;}
   .panel-hide{display:none;}
 
@@ -228,14 +246,24 @@ const NAV = [
 ];
 
 /* ---------- tiny helpers for repeatable wireframe fragments ---------- */
-const spark = (n=10)=>{let h='';for(let i=0;i<n;i++){const v=20+Math.round(Math.random()*80);h+=`<i style="height:${v}%"></i>`;}return h;};
-const bars = (n=12,hiIdx=[])=>{let h='';for(let i=0;i<n;i++){const v=15+Math.round(Math.random()*85);h+=`<i class="${hiIdx.includes(i)?'hi':''}" style="height:${v}%"></i>`;}return h;};
-const heat = (cols,rows)=>{let h=`<div class="heat" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">`;for(let i=0;i<cols*rows;i++){const o=(0.15+Math.random()*0.85).toFixed(2);h+=`<i style="background:rgba(47,95,220,${o})"></i>`;}return h+`</div>`;};
+const spark = (n=10,seed=42)=>{seed=seed||42;let h='';for(let i=0;i<n;i++){const v=20+((seed+i*13)%80);h+=`<i style="height:${v}%"></i>`;}return h;};
+const bars = (n=12,hiIdx=[],seed=42)=>{let h='';for(let i=0;i<n;i++){const v=15+((seed+i*17)%85);h+=`<i class="${hiIdx.includes(i)?"hi":""}" style="height:${v}%"></i>`;}return h;};
+const heat = (cols,rows,seed=42)=>{let h=`<div class="heat" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">`;for(let i=0;i<cols*rows;i++){const o=(0.15+((seed+i*7)%70)/100).toFixed(2);h+=`<i style="background:rgba(0,102,179,${o})"></i>`;}return h+`</div>`;};
+const C360_COLORS={accent:"#0066b3",gray:"#94a3b8",muted:"#c7cbd1",cyan:"#00a3e0"};
+function chartLegend(items,opts={}){const cls=[opts.compact?"compact":"",opts.categories?"categories":""].filter(Boolean).join(" ");return `<div class="chart-legend${cls?" "+cls:""}" role="list">${items.map(it=>{if(it.gradient)return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch gradient"></span><span>${it.label}</span></span>`;if(it.line)return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch line" style="border-top-color:${it.color}"></span><span>${it.label}</span></span>`;return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch" style="background:${it.color}"></span><span>${it.label}</span></span>`;}).join("")}</div>`;}
+function legBar(hiLabel,baseLabel,categories){let h=chartLegend([{color:C360_COLORS.gray,label:baseLabel||"Baseline"},{color:C360_COLORS.accent,label:hiLabel||"Highlighted"}],{compact:true});if(categories&&categories.length)h+=chartLegend(categories.map(l=>({color:C360_COLORS.gray,label:l})),{categories:true});return h;}
+function barsChartBody(n,hiIdx,categories,seed=42){return `<div class="bars">${bars(n,hiIdx,seed)}</div>`;}
+function legLine(series){return chartLegend(series.map(s=>({color:s.color,label:s.label,line:true})),{compact:true});}
+function legDonut(segments){return chartLegend(segments.map(s=>({color:s.color,label:s.label})),{compact:true});}
+function legHeat(note){return chartLegend([{gradient:true,label:note||"Low → high intensity"}],{compact:true});}
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const FUNNEL=["Visit","Browse","Configure","Cart","Checkout","Confirm"];
 function kpi(label,val,delta,dir){
- return `<div class="kpi"><div class="k-label">${label}</div><div class="k-val">${val}</div><div class="k-delta ${dir}">${delta}</div><div class="k-spark">${spark(12)}</div></div>`;
+ return `<div class="kpi"><div class="k-label">${label}</div><div class="k-val">${val}</div><div class="k-delta ${dir}">${delta}</div><div class="k-spark">${spark(12,label.length*7)}</div>${chartLegend([{color:C360_COLORS.accent,label:"12-period trend (indexed)"}],{compact:true})}</div>`;
 }
-function chartBox(title,sub,body){
- return `<div class="chart-box"><div class="cb-head"><div><div class="block-title">${title}</div><div class="block-sub">${sub}</div></div><span class="tag">···</span></div><div class="chart-body">${body}</div></div>`;
+function chartBox(title,sub,body,legend){
+ return `<div class="chart-box"><div class="cb-head"><div><div class="block-title">${title}</div><div class="block-sub">${sub}</div></div><span class="tag">···</span></div><div class="chart-body chart-body-stacked">${body}${legend||""}</div></div>`;
 }
 function tableWrap(title,theadHtml,rowsHtml){
  return `<div class="block"><div class="block-title" style="margin-bottom:8px">${title}</div><table class="wtable"><thead><tr>${theadHtml}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
@@ -246,7 +274,7 @@ function iCard(title,desc,metaL,metaR,btns){
 function pill(text,cls){return `<span class="pill ${cls}">${text}</span>`;}
 function barCell(pct){return `<span class="bar-cell"><i style="width:${pct}%"></i></span>`;}
 
-/* ===================== SCREEN 1 — EXECUTIVE DASHBOARD ===================== */
+/* ===================== SCREEN 1-EXECUTIVE DASHBOARD ===================== */
 function s_dashboard(){
  return `
  <div class="wf"><div class="wf-label">Filter &amp; context bar</div>
@@ -270,26 +298,26 @@ function s_dashboard(){
   <div class="col" style="flex:2">
    <div class="wf"><div class="wf-label">Behavior clusters &amp; emerging trends</div>
     <div class="row">
-     <div class="col">${chartBox("Behavior cluster distribution","donut · 6 segments", `<div class="donut"></div><div style="text-align:center;font-size:9px;color:var(--ink-soft);font-family:var(--mono)">Night Streamers · High Value · Family · Roamers · Gamers · Other</div>`)}</div>
-     <div class="col">${chartBox("Emerging trend velocity","line · 90 days", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 20,60 40,62 60,45 80,50 100,30 120,35 140,20 160,24 180,10 200,15" fill="none" stroke="#2f5fdc" stroke-width="2"/><polyline points="0,80 20,78 40,75 60,74 80,70 100,68 120,66 140,63 160,60 180,58 200,55" fill="none" stroke="#c7cbd1" stroke-width="2"/></svg></div>`)}</div>
+     <div class="col">${chartBox("Behavior cluster distribution","donut · 6 segments", `<div class="donut-layout"><div class="donut"></div></div>`, legDonut([{color:C360_COLORS.accent,label:"Night Streamers (34%)"},{color:"#b9c1cc",label:"High Value (28%)"},{color:"#dfe3e8",label:"Family (18%)"},{color:C360_COLORS.gray,label:"Roamers · Gamers · Other (20%)"}]))}</div>
+     <div class="col">${chartBox("Emerging trend velocity","line · 90 days", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 20,60 40,62 60,45 80,50 100,30 120,35 140,20 160,24 180,10 200,15" fill="none" stroke="#0066b3" stroke-width="2"/><polyline points="0,80 20,78 40,75 60,74 80,70 100,68 120,66 140,63 160,60 180,58 200,55" fill="none" stroke="#c7cbd1" stroke-width="2"/></svg></div>`, legLine([{color:C360_COLORS.accent,label:"Engagement velocity"},{color:C360_COLORS.muted,label:"Market baseline"}]))}</div>
     </div>
    </div>
   </div>
   <div class="col">
    <div class="wf"><div class="wf-label">Sentiment pulse</div>
-    ${chartBox("Sentiment (7d)","stacked bar", `<div class="bars">${bars(7,[5,6])}</div>`)}
+    ${chartBox("Sentiment (7d)","stacked bar", barsChartBody(7,[5,6],DAYS), legBar("Latest 2 days","Prior days",DAYS))}
    </div>
   </div>
  </div>
 
  <div class="row">
   <div class="col" style="flex:1.4">
-   <div class="wf"><div class="wf-label">Top churn risks — AI ranked</div>
+   <div class="wf"><div class="wf-label">Top churn risks-AI ranked</div>
     ${tableWrap("Watchlist (top 5 of 4,812)",
       `<th>Customer</th><th>Segment</th><th>Risk</th><th>Revenue impact</th><th>Reason</th>`,
       [
        ["Chen Family Plan","Family Decision Makers","high","$18,400/yr","Data usage drop + 2 support escalations"],
-       ["Acct #88213 — SMB","Business Upgrade","high","$62,100/yr","Competitor plan searches detected"],
+       ["Acct #88213-SMB","Business Upgrade","high","$62,100/yr","Competitor plan searches detected"],
        ["Rivera, M.","High Value Users","med","$4,200/yr","Billing complaint, sentiment −0.6"],
        ["Nguyen Household","Weekend Gamers","med","$3,050/yr","Latency complaints, app uninstall risk"],
        ["Acct #40921","Travel Professionals","low","$1,900/yr","Roaming usage seasonal dip"],
@@ -299,10 +327,10 @@ function s_dashboard(){
   </div>
   <div class="col">
    <div class="wf"><div class="wf-label">AI insight feed</div>
-    <div class="list-row"><span class="tag accent">Insight</span><div><b>New cluster forming</b> — "Streaming-first switchers" (+14% WoW), concentrated in 2 metros.</div></div>
-    <div class="list-row"><span class="tag">Alert</span><div><b>Sentiment dip</b> — billing NLP topic trending negative in Northeast region.</div></div>
+    <div class="list-row"><span class="tag accent">Insight</span><div><b>New cluster forming</b>-"Streaming-first switchers" (+14% WoW), concentrated in 2 metros.</div></div>
+    <div class="list-row"><span class="tag">Alert</span><div><b>Sentiment dip</b>-billing NLP topic trending negative in Northeast region.</div></div>
     <div class="list-row"><span class="tag">Opportunity</span><div><b>Broadband bundle</b> propensity up 9% for 3,200 mobile-only accounts.</div></div>
-    <div class="list-row"><span class="tag">Alert</span><div><b>Network correlation</b> — churn risk +11% where dropped-call rate &gt; 2%.</div></div>
+    <div class="list-row"><span class="tag">Alert</span><div><b>Network correlation</b>-churn risk +11% where dropped-call rate &gt; 2%.</div></div>
    </div>
   </div>
  </div>
@@ -310,13 +338,13 @@ function s_dashboard(){
  <div class="wf"><div class="wf-label">Opportunity &amp; recommendation cards</div>
   <div class="cardgrid">
    ${iCard("Family plan cross-sell","2,140 single-line accounts show co-located device signals matching family plan adopters.","Priority: High","$3.1M potential",`<span class="btn accent">Review cohort</span><span class="btn ghost">Dismiss</span>`)}
-   ${iCard("Retention offer — roaming segment","AI recommends 15% loyalty credit for 640 travel-professional accounts at churn risk.","Priority: Med","$640K at risk",`<span class="btn accent">Approve</span><span class="btn ghost">Edit</span>`)}
+   ${iCard("Retention offer-roaming segment","AI recommends 15% loyalty credit for 640 travel-professional accounts at churn risk.","Priority: Med","$640K at risk",`<span class="btn accent">Approve</span><span class="btn ghost">Edit</span>`)}
    ${iCard("Network experience escalation","Correlated complaint + telemetry spike in 3 cell clusters, Southeast region.","Priority: High","4,900 customers",`<span class="btn accent">Notify ops</span><span class="btn ghost">Details</span>`)}
   </div>
  </div>`;
 }
 
-/* ===================== SCREEN 2 — CUSTOMER 360+ ===================== */
+/* ===================== SCREEN 2-CUSTOMER 360+ ===================== */
 function s_c360(){
  return `
  <div class="row">
@@ -345,18 +373,18 @@ function s_c360(){
   <div class="col">
    <div class="wf"><div class="wf-label">AI summary</div>
     <div class="block" style="background:var(--accent-soft);border-color:#c9d8fb">
-     <div class="ai-kind" style="color:var(--accent);font-family:var(--mono);font-size:9px;text-transform:uppercase;margin-bottom:6px">Generated summary · updated 2h ago</div>
+     <div class="ai-kind" style="color:var(--accent);font-family:var(--font);font-size:9px;text-transform:uppercase;margin-bottom:6px">Generated summary · updated 2h ago</div>
      <p style="margin:0;font-size:12px;line-height:1.6">Marcus has been a stable high-value customer for 8 years but shows early churn signals: two billing complaints in 30 days, a 22% drop in data usage, and rising sentiment negativity around "billing clarity." Recommend a proactive outreach with a loyalty credit before the next billing cycle.</p>
     </div>
    </div>
 
    <div class="row">
-    <div class="col">${chartBox("Behavior score trend","line · 12 months", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,20 20,25 40,22 60,30 80,28 100,40 120,38 140,50 160,48 180,55 200,52" fill="none" stroke="#2f5fdc" stroke-width="2"/></svg></div>`)}</div>
-    <div class="col">${chartBox("Journey / touchpoint mix","bar · 30 days", `<div class="bars">${bars(8)}</div>`)}</div>
+    <div class="col">${chartBox("Behavior score trend","line · 12 months", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,20 20,25 40,22 60,30 80,28 100,40 120,38 140,50 160,48 180,55 200,52" fill="none" stroke="#0066b3" stroke-width="2"/></svg></div>`, legLine([{color:C360_COLORS.accent,label:"Behavior score (12 mo)"}])+chartLegend(MONTHS.slice(0,12).map(m=>({color:C360_COLORS.gray,label:m})),{categories:true}))}</div>
+    <div class="col">${chartBox("Journey / touchpoint mix","bar · 30 days", barsChartBody(8,[],["App","Web","Retail","Care","IVR","SMS","Email","Partner"]), legBar("Top channels","Other touchpoints",["App","Web","Retail","Care","IVR","SMS","Email","Partner"]))}</div>
    </div>
 
-   <div class="wf"><div class="wf-label">Timeline — unified activity</div>
-    <div class="list-row"><span class="tag">Support</span><div><b>Billing inquiry</b> — call, 6 min, unresolved, sentiment −0.7 <span class="block-sub">· 2 days ago</span></div></div>
+   <div class="wf"><div class="wf-label">Timeline-unified activity</div>
+    <div class="list-row"><span class="tag">Support</span><div><b>Billing inquiry</b>-call, 6 min, unresolved, sentiment −0.7 <span class="block-sub">· 2 days ago</span></div></div>
     <div class="list-row"><span class="tag">App</span><div><b>Viewed competitor comparison</b> page in-app <span class="block-sub">· 4 days ago</span></div></div>
     <div class="list-row"><span class="tag">Billing</span><div><b>Autopay charge</b> processed, no dispute <span class="block-sub">· 12 days ago</span></div></div>
     <div class="list-row"><span class="tag">Network</span><div><b>3 dropped calls</b> flagged, tower cluster NE-114 <span class="block-sub">· 14 days ago</span></div></div>
@@ -372,7 +400,7 @@ function s_c360(){
  </div>`;
 }
 
-/* ===================== SCREEN 3 — BEHAVIOR INTELLIGENCE ===================== */
+/* ===================== SCREEN 3-BEHAVIOR INTELLIGENCE ===================== */
 function s_behavior(){
  return `
  <div class="wf"><div class="wf-label">Filters</div>
@@ -381,12 +409,12 @@ function s_behavior(){
  <div class="row">
   <div class="col" style="flex:1.3">
    <div class="wf"><div class="wf-label">Website heatmap</div>
-    <div class="chart-box" style="height:200px">${heat(14,7)}</div>
+    <div class="chart-box" style="height:200px"><div class="chart-body chart-body-stacked">${heat(14,7)}${legHeat("Self-care click density · hour × page zone")}</div></div>
    </div>
   </div>
   <div class="col">
    <div class="wf"><div class="wf-label">Intent detection</div>
-    <div class="list-row"><span class="tag accent">92%</span> Upgrade intent — device page dwell</div>
+    <div class="list-row"><span class="tag accent">92%</span> Upgrade intent-device page dwell</div>
     <div class="list-row"><span class="tag accent">81%</span> Plan comparison intent</div>
     <div class="list-row"><span class="tag">64%</span> Support-seeking intent</div>
     <div class="list-row"><span class="tag">47%</span> Cancellation research intent</div>
@@ -411,8 +439,8 @@ function s_behavior(){
  </div>
 
  <div class="row">
-  <div class="col">${chartBox("Behavior score distribution","bar · population", `<div class="bars">${bars(10,[7,8])}</div>`)}</div>
-  <div class="col">${chartBox("Clickstream funnel","bar · homepage→checkout", `<div class="bars">${bars(6,[0])}</div>`)}</div>
+  <div class="col">${chartBox("Behavior score distribution","bar · population", barsChartBody(10,[7,8],Array.from({length:10},(_,i)=>`D${i+1}`)), legBar("Top deciles","Score bands",Array.from({length:10},(_,i)=>`D${i+1}`)))}</div>
+  <div class="col">${chartBox("Clickstream funnel","bar · homepage→checkout", barsChartBody(6,[0],FUNNEL), legBar("Entry","Down-funnel",FUNNEL))}</div>
   <div class="col">
    <div class="wf"><div class="wf-label">AI summary</div>
     <p style="font-size:11.5px;margin:0;line-height:1.55">Users spending &gt;90s on device comparison pages convert to upgrade at 3.1× baseline. Recommend surfacing trade-in offer at the 60s mark.</p>
@@ -421,7 +449,7 @@ function s_behavior(){
  </div>`;
 }
 
-/* ===================== SCREEN 4 — CUSTOMER JOURNEY EXPLORER ===================== */
+/* ===================== SCREEN 4-CUSTOMER JOURNEY EXPLORER ===================== */
 function s_journey(){
  const steps = [
   {name:"Homepage",sub:"100%",drop:false},
@@ -440,8 +468,8 @@ function s_journey(){
    ${steps.map(s=>`<div class="t-step ${s.drop?'drop':''}"><div class="t-line"></div><div class="t-dot"></div><div class="t-name">${s.name}</div><div class="t-sub">${s.sub}</div></div>`).join('')}
   </div>
   <div class="row" style="margin-top:16px">
-   <div class="col">${chartBox("Conversion by step","bar", `<div class="bars">${bars(6,[0])}</div>`)}</div>
-   <div class="col">${chartBox("Time-on-step distribution","line", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,60 40,40 80,55 120,20 160,45 200,30" fill="none" stroke="#2f5fdc" stroke-width="2"/></svg></div>`)}</div>
+   <div class="col">${chartBox("Conversion by step","bar", barsChartBody(6,[0],FUNNEL), legBar("Step 1 (100%)","Later steps",FUNNEL))}</div>
+   <div class="col">${chartBox("Time-on-step distribution","line", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,60 40,40 80,55 120,20 160,45 200,30" fill="none" stroke="#0066b3" stroke-width="2"/></svg></div>`, legLine([{color:C360_COLORS.accent,label:"Median time (indexed)"}]))}</div>
   </div>
  </div>
 
@@ -450,7 +478,7 @@ function s_journey(){
    <div class="wf"><div class="wf-label">AI-identified drop-offs &amp; pain points</div>
     ${tableWrap("Detected issues",`<th>Step</th><th>Issue</th><th>Impact</th><th>Confidence</th>`,
      [["Checkout","Credit check form abandonment after step 2","−23% conversion","91%"],
-      ["Plans","Comparison table overload — 4+ plan options","−9% conversion","78%"],
+      ["Plans","Comparison table overload-4+ plan options","−9% conversion","78%"],
       ["Pricing","Price shown before value framing","−6% conversion","64%"]]
      .map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join(''))}
    </div>
@@ -463,7 +491,7 @@ function s_journey(){
  </div>`;
 }
 
-/* ===================== SCREEN 5 — KNOWLEDGE GRAPH EXPLORER ===================== */
+/* ===================== SCREEN 5-KNOWLEDGE GRAPH EXPLORER ===================== */
 function s_graph(){
  const nodes = [
   {x:'50%',y:'46%',s:64,c:true,l:'Rivera,\\nM.'},
@@ -483,7 +511,7 @@ function s_graph(){
  </div>
  <div class="row">
   <div class="col" style="flex:2">
-   <div class="wf"><div class="wf-label">Graph canvas — hover reveals relationship, click expands</div>
+   <div class="wf"><div class="wf-label">Graph canvas-hover reveals relationship, click expands</div>
     <div class="graph-canvas">
      ${edges.map(e=>`<div class="gedge" style="left:${e.x1};top:${e.y1};width:120px;transform:rotate(0deg)"></div>`).join('')}
      ${nodes.map(n=>`<div class="gnode ${n.c?'center':''}" style="left:${n.x};top:${n.y};width:${n.s}px;height:${n.s}px;transform:translate(-50%,-50%)">${n.l.split('\\n').join('<br/>')}</div>`).join('')}
@@ -496,16 +524,16 @@ function s_graph(){
     <div class="block-sub" style="margin-bottom:8px">Customer · Acct #40021</div>
     <div class="list-row">Connected entities: <b>18</b></div>
     <div class="list-row">Relationship types: <b>7</b></div>
-    <div class="list-row">Strongest link: <b>Family — J. Rivera (0.94)</b></div>
+    <div class="list-row">Strongest link: <b>Family-J. Rivera (0.94)</b></div>
    </div>
    <div class="wf"><div class="wf-label">AI-suggested relationships</div>
-    <p style="font-size:11.5px;margin:0">Graph AI infers a probable household link to Acct #40088 (shared device IP + billing address, confidence 87%) — not yet confirmed in CRM.</p>
+    <p style="font-size:11.5px;margin:0">Graph AI infers a probable household link to Acct #40088 (shared device IP + billing address, confidence 87%)-not yet confirmed in CRM.</p>
    </div>
   </div>
  </div>`;
 }
 
-/* ===================== SCREEN 6 — HIDDEN COMMUNITIES ===================== */
+/* ===================== SCREEN 6-HIDDEN COMMUNITIES ===================== */
 function s_communities(){
  const comms = [
   ["Night Streamers","Peak activity 11pm–2am, heavy streaming data usage","218K","$412M","low","+6.2%"],
@@ -523,18 +551,18 @@ function s_communities(){
   </div>
  </div>
  <div class="row">
-  <div class="col">${chartBox("Community size over time","bar · 6 communities", `<div class="bars">${bars(6,[2])}</div>`)}</div>
+  <div class="col">${chartBox("Community size over time","bar · 6 communities", barsChartBody(6,[2],MONTHS.slice(6,12)), legBar("Focus community","Size index",MONTHS.slice(6,12)))}</div>
   <div class="col">
-   <div class="wf"><div class="wf-label">Recommended actions — Family Decision Makers</div>
-    <div class="list-row">🎯 Launch family-bundle upsell — 62% propensity match</div>
+   <div class="wf"><div class="wf-label">Recommended actions-Family Decision Makers</div>
+    <div class="list-row">🎯 Launch family-bundle upsell-62% propensity match</div>
     <div class="list-row">📩 Send decision-maker-targeted billing summary email</div>
-    <div class="list-row">🛡️ Prioritize retention offers for this cohort — high LTV concentration</div>
+    <div class="list-row">🛡️ Prioritize retention offers for this cohort-high LTV concentration</div>
    </div>
   </div>
  </div>`;
 }
 
-/* ===================== SCREEN 7 — SOCIAL INTELLIGENCE ===================== */
+/* ===================== SCREEN 7-SOCIAL INTELLIGENCE ===================== */
 function s_social(){
  return `
  <div class="cardgrid c4" style="margin-bottom:18px">
@@ -544,8 +572,8 @@ function s_social(){
   ${kpi("Emerging issues","4","+2 new","up")}
  </div>
  <div class="row">
-  <div class="col">${chartBox("Sentiment breakdown","donut · pos/neg/neutral", `<div class="donut" style="background:conic-gradient(#2f5fdc 0 48%, #dfe3e8 48% 78%, #9aa0a8 78% 100%)"></div>`)}</div>
-  <div class="col" style="flex:1.4">${chartBox("Regional sentiment heatmap","grid · by DMA", heat(12,4))}</div>
+  <div class="col">${chartBox("Sentiment breakdown","donut · pos/neg/neutral", `<div class="donut-layout"><div class="donut" style="background:conic-gradient(#0066b3 0 48%, #dfe3e8 48% 78%, #9aa0a8 78% 100%)"></div></div>`, legDonut([{color:C360_COLORS.accent,label:"Positive (48%)"},{color:"#dfe3e8",label:"Neutral (30%)"},{color:C360_COLORS.gray,label:"Negative (22%)"}]))}</div>
+  <div class="col" style="flex:1.4">${chartBox("Regional sentiment heatmap","grid · by DMA", heat(12,4), legHeat("Sentiment by DMA · low → high"))}</div>
  </div>
  <div class="row">
   <div class="col">
@@ -557,7 +585,7 @@ function s_social(){
    </div>
   </div>
   <div class="col">
-   <div class="wf"><div class="wf-label">Emerging issues — AI flagged</div>
+   <div class="wf"><div class="wf-label">Emerging issues-AI flagged</div>
     <div class="list-row"><span class="pill high">high</span> Billing confusion spike, Northeast metros</div>
     <div class="list-row"><span class="pill med">med</span> Trade-in shipment delay complaints, national</div>
    </div>
@@ -568,11 +596,11 @@ function s_social(){
  </div>`;
 }
 
-/* ===================== SCREEN 8 — CHURN INTELLIGENCE ===================== */
+/* ===================== SCREEN 8-CHURN INTELLIGENCE ===================== */
 function s_churn(){
  const rows = [
   ["Chen Family Plan","high","91%","$18,400/yr","Data usage drop, 2 escalations","15% loyalty credit + device upgrade","7 days"],
-  ["Acct #88213 — SMB","high","88%","$62,100/yr","Competitor plan searches detected","Business tier discount + dedicated rep","3 days"],
+  ["Acct #88213-SMB","high","88%","$62,100/yr","Competitor plan searches detected","Business tier discount + dedicated rep","3 days"],
   ["Rivera, M.","med","67%","$4,200/yr","Billing complaint, sentiment −0.6","Bill review call + statement clarity fix","10 days"],
   ["Nguyen Household","med","61%","$3,050/yr","Latency complaints, app uninstall risk","Network credit + priority support","14 days"],
   ["Acct #40921","low","24%","$1,900/yr","Seasonal roaming dip","Monitor only","—"],
@@ -590,7 +618,7 @@ function s_churn(){
    </div>
   </div>
   <div class="col">
-   <div class="wf"><div class="wf-label">Explainable AI panel — Chen Family Plan</div>
+   <div class="wf"><div class="wf-label">Explainable AI panel-Chen Family Plan</div>
     <div class="block-sub" style="margin-bottom:8px">Model: Gradient-boosted churn classifier · v4.2</div>
     ${tableWrap("Feature contribution",`<th>Signal</th><th>Weight</th>`,
      [["Data usage decline 30d","34"],["Support escalations","27"],["Competitor site visits","19"],["Tenure","12"],["Payment history","8"]]
@@ -601,7 +629,7 @@ function s_churn(){
  </div>`;
 }
 
-/* ===================== SCREEN 9 — DIGITAL TWIN / PERSONA ===================== */
+/* ===================== SCREEN 9-DIGITAL TWIN / PERSONA ===================== */
 function s_twin(){
  return `
  <div class="row">
@@ -621,7 +649,7 @@ function s_twin(){
    <div class="row">
     <div class="col">
      <div class="wf"><div class="wf-label">Preferred channels</div>
-      <div class="bars" style="height:70px">${bars(5,[0])}</div>
+      ${barsChartBody(5,[0],["SMS","Email","App","Voice","Retail"])}${legBar("Primary channel","Other channels",["SMS","Email","App","Voice","Retail"])}
       <div class="block-sub" style="margin-top:4px">App · Email · SMS · Call · Web</div>
      </div>
     </div>
@@ -640,15 +668,15 @@ function s_twin(){
  </div>`;
 }
 
-/* ===================== SCREEN 10 — OPPORTUNITY FINDER ===================== */
+/* ===================== SCREEN 10-OPPORTUNITY FINDER ===================== */
 function s_opportunity(){
  const opps = [
   ["Family plan cross-sell","2,140 single-line accounts with co-located device signals","High","$3.1M"],
   ["Broadband bundle upsell","3,200 mobile-only accounts show home-internet propensity","High","$2.4M"],
   ["International roaming add-on","640 travel-professional accounts, frequent border crossings","Med","$680K"],
   ["Business tier upgrade","410 SMB accounts exceeding data caps monthly","High","$1.9M"],
-  ["Retention save — device bundle","890 at-risk accounts responsive to device incentives","Med","$1.1M"],
-  ["Family plan — new lines","1,050 accounts with detected new household members","Low","$540K"],
+  ["Retention save-device bundle","890 at-risk accounts responsive to device incentives","Med","$1.1M"],
+  ["Family plan-new lines","1,050 accounts with detected new household members","Low","$540K"],
  ];
  return `
  <div class="wf"><div class="wf-label">Filters</div>
@@ -659,12 +687,12 @@ function s_opportunity(){
    ${opps.map(o=>iCard(o[0],o[1],`Priority: ${o[2]}`,`Potential: ${o[3]}`,`<span class="btn accent">View AI explanation</span><span class="btn ghost">Assign</span>`)).join('')}
   </div>
  </div>
- <div class="wf"><div class="wf-label">AI explanation — Family plan cross-sell</div>
+ <div class="wf"><div class="wf-label">AI explanation-Family plan cross-sell</div>
   <p style="margin:0;font-size:11.5px">Model identifies co-located device fingerprints (same Wi-Fi SSID + billing address) across single-line accounts, matching the behavioral signature of 92% of existing family-plan adopters at signup. Estimated conversion propensity: 41%.</p>
  </div>`;
 }
 
-/* ===================== SCREEN 11 — CAMPAIGN INTELLIGENCE ===================== */
+/* ===================== SCREEN 11-CAMPAIGN INTELLIGENCE ===================== */
 function s_campaign(){
  return `
  <div class="row">
@@ -672,7 +700,7 @@ function s_campaign(){
    <div class="wf"><div class="wf-label">Audience builder</div>
     <div class="filterbar"><span class="fchip">Segment: Family Decision Makers</span><span class="fchip">+ Add condition</span></div>
     <div class="block-sub" style="margin-bottom:8px">Estimated reach: <b style="color:var(--ink)">340,200</b> customers</div>
-    <div class="wf-label" style="margin-top:4px">Recommended audience — AI</div>
+    <div class="wf-label" style="margin-top:4px">Recommended audience-AI</div>
     <div class="list-row">🎯 Lookalike of top 5% LTV family accounts <span class="tag accent" style="margin-left:auto">+62% match</span></div>
     <div class="list-row">🎯 High app engagement + low support contact <span class="tag accent" style="margin-left:auto">+48% match</span></div>
    </div>
@@ -690,8 +718,8 @@ function s_campaign(){
   </div>
  </div>
  <div class="row">
-  <div class="col">${chartBox("Campaign performance","bar · last 5 campaigns", `<div class="bars">${bars(5,[3])}</div>`)}</div>
-  <div class="col">${chartBox("Conversion funnel","bar · sent→converted", `<div class="bars">${bars(4,[0])}</div>`)}</div>
+  <div class="col">${chartBox("Campaign performance","bar · last 5 campaigns", barsChartBody(5,[3],["C1","C2","C3","C4","C5"]), legBar("Best campaign","Others",["C1","C2","C3","C4","C5"]))}</div>
+  <div class="col">${chartBox("Conversion funnel","bar · sent→converted", barsChartBody(4,[0],["Sent","Opened","Clicked","Converted"]), legBar("Sent","Funnel stages",["Sent","Opened","Clicked","Converted"]))}</div>
   <div class="col">
    <div class="wf"><div class="wf-label">ROI summary</div>
     ${kpi("Campaign ROI","4.8×","+0.6× vs avg","up")}
@@ -700,18 +728,18 @@ function s_campaign(){
  </div>
  <div class="wf"><div class="wf-label">Lookalike segments</div>
   ${tableWrap("Generated segments",`<th>Segment</th><th>Base</th><th>Match score</th><th>Reach</th>`,
-   [["Family Decision Makers — lookalike","High Value Users","0.91","340K"],["Digital Enthusiasts — lookalike","Weekend Gamers","0.84","201K"]]
+   [["Family Decision Makers-lookalike","High Value Users","0.91","340K"],["Digital Enthusiasts-lookalike","Weekend Gamers","0.84","201K"]]
    .map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join(''))}
  </div>`;
 }
 
-/* ===================== SCREEN 12 — AI RECOMMENDATION CENTER ===================== */
+/* ===================== SCREEN 12-AI RECOMMENDATION CENTER ===================== */
 function s_recs(){
  const recs = [
-  ["Retention offer — Chen Family Plan","15% loyalty credit + device upgrade eligibility","94%","$18,400"],
-  ["Pricing change — regional bundle","Reduce broadband bundle price 4% in 3 competitive DMAs","81%","$2.1M"],
-  ["Service improvement — billing statement","Redesign statement summary section to reduce confusion tickets","76%","−1,200 tickets/mo"],
-  ["Customer outreach — trade-in delay","Proactive SMS to 4,100 customers with delayed trade-in shipments","88%","+0.4 CSAT"],
+  ["Retention offer-Chen Family Plan","15% loyalty credit + device upgrade eligibility","94%","$18,400"],
+  ["Pricing change-regional bundle","Reduce broadband bundle price 4% in 3 competitive DMAs","81%","$2.1M"],
+  ["Service improvement-billing statement","Redesign statement summary section to reduce confusion tickets","76%","−1,200 tickets/mo"],
+  ["Customer outreach-trade-in delay","Proactive SMS to 4,100 customers with delayed trade-in shipments","88%","+0.4 CSAT"],
  ];
  return `
  <div class="wf"><div class="wf-label">Recommendation queue</div>
@@ -721,12 +749,12 @@ function s_recs(){
  </div>
  <div class="wf"><div class="wf-label">Approval history</div>
   ${tableWrap("Recent decisions",`<th>Recommendation</th><th>Decision</th><th>Owner</th><th>Business impact</th>`,
-   [["Loyalty credit — travel segment","Approved","M. Osei","$640K retained"],["Pricing test — SMB tier","Rejected","J. Patel","—"],["Outreach — network complaint cluster","Approved","M. Osei","+0.3 CSAT"]]
+   [["Loyalty credit-travel segment","Approved","M. Osei","$640K retained"],["Pricing test-SMB tier","Rejected","J. Patel","—"],["Outreach-network complaint cluster","Approved","M. Osei","+0.3 CSAT"]]
    .map(r=>`<tr><td>${r[0]}</td><td>${r[1]==='Approved'?pill('approved','low'):pill('rejected','high')}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join(''))}
  </div>`;
 }
 
-/* ===================== SCREEN 13 — AI COPILOT ===================== */
+/* ===================== SCREEN 13-AI COPILOT ===================== */
 function s_copilot(){
  return `
  <div class="row">
@@ -751,7 +779,7 @@ function s_copilot(){
        <span class="cite">Sources: Churn model v4.2 · Support case index · Billing complaint NLP tags</span>
       </div>
       <div class="bubble user">Generate a one-page executive summary</div>
-      <div class="bubble ai">Draft ready — 1 page, 4 sections (Health, Risk, Opportunity, Actions). Export as PDF or push to Executive Command Center?
+      <div class="bubble ai">Draft ready-1 page, 4 sections (Health, Risk, Opportunity, Actions). Export as PDF or push to Executive Command Center?
        <span class="cite">Sources: Executive Dashboard KPIs · Opportunity Finder · Churn Intelligence</span>
       </div>
      </div>
@@ -769,13 +797,13 @@ function s_copilot(){
  </div>`;
 }
 
-/* ===================== SCREEN 14 — AI AGENTS ===================== */
+/* ===================== SCREEN 14-AI AGENTS ===================== */
 function s_agents(){
  const agents = [
   ["Marketing Agent","run","Building lookalike audience for broadband upsell","92%"],
-  ["Pricing Agent","wait","Awaiting approval — SMB tier discount proposal","88%"],
+  ["Pricing Agent","wait","Awaiting approval-SMB tier discount proposal","88%"],
   ["Customer Care Agent","run","Drafting proactive outreach for 4,100 trade-in delays","95%"],
-  ["Campaign Agent","idle","Idle — last run 2h ago (Family Plan campaign)","—"],
+  ["Campaign Agent","idle","Idle-last run 2h ago (Family Plan campaign)","—"],
   ["Executive Agent","run","Compiling weekly executive summary report","90%"],
   ["Retention Agent","run","Scoring 4,812 accounts for churn intervention priority","93%"],
  ];
@@ -786,7 +814,7 @@ function s_agents(){
     <div class="agent-card">
      <div class="agent-head"><b>${a[0]}</b><span class="tag ${a[1]==='run'?'accent':''}"><span class="status-dot ${a[1]}"></span>${a[1]==='run'?'Running':a[1]==='wait'?'Awaiting approval':'Idle'}</span></div>
      <p style="margin:0 0 8px;font-size:11px;color:var(--ink-soft)">${a[2]}</p>
-     <div class="meta" style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:6px">
+     <div class="meta" style="display:flex;justify-content:space-between;font-family:var(--font);font-size:9.5px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:6px">
       <span>Confidence: ${a[3]}</span><span>History: 128 runs</span>
      </div>
      <div class="btnrow"><span class="btn ghost">View log</span><span class="btn accent">Approve action</span><span class="btn ghost">Pause</span></div>
@@ -800,7 +828,7 @@ function s_agents(){
  </div>`;
 }
 
-/* ===================== SCREEN 15 — EXECUTIVE COMMAND CENTER ===================== */
+/* ===================== SCREEN 15-EXECUTIVE COMMAND CENTER ===================== */
 function s_command(){
  return `
  <div class="cardgrid c4" style="margin-bottom:18px">
@@ -810,8 +838,8 @@ function s_command(){
   ${kpi("Digital engagement","61%","+4.0 pts","up")}
  </div>
  <div class="row">
-  <div class="col">${chartBox("Sentiment — enterprise wide","donut", `<div class="donut"></div>`)}</div>
-  <div class="col" style="flex:1.6">${chartBox("Business KPI trend","line · quarterly", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 40,60 80,55 120,40 160,35 200,20" fill="none" stroke="#2f5fdc" stroke-width="2"/></svg></div>`)}</div>
+  <div class="col">${chartBox("Sentiment-enterprise wide","donut", `<div class="donut-layout"><div class="donut"></div></div>`, legDonut([{color:C360_COLORS.accent,label:"Positive (42%)"},{color:"#dfe3e8",label:"Neutral (38%)"},{color:C360_COLORS.gray,label:"Negative (20%)"}]))}</div>
+  <div class="col" style="flex:1.6">${chartBox("Business KPI trend","line · quarterly", `<div class="line-chart"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 40,60 80,55 120,40 160,35 200,20" fill="none" stroke="#0066b3" stroke-width="2"/></svg></div>`, legLine([{color:C360_COLORS.accent,label:"Revenue & health composite"}]))}</div>
  </div>
  <div class="row">
   <div class="col">
@@ -836,8 +864,8 @@ function s_command(){
   </div>
   <div class="col">
    <div class="wf"><div class="wf-label">Strategic recommendations</div>
-    <div class="list-row">1. Redesign billing statement summary — est. −1,200 tickets/mo</div>
-    <div class="list-row">2. Launch family-bundle cross-sell campaign — est. $3.1M</div>
+    <div class="list-row">1. Redesign billing statement summary-est. −1,200 tickets/mo</div>
+    <div class="list-row">2. Launch family-bundle cross-sell campaign-est. $3.1M</div>
     <div class="list-row">3. Regional pricing test in 3 competitive DMAs</div>
    </div>
   </div>
@@ -894,18 +922,18 @@ const META = {
       ml:"Health score, sentiment score, and behavior score are model outputs updated on each new event.",
       graph:"Links this customer to household members, shared devices, and linked accounts shown in the knowledge graph.",
       agentic:"Retention Agent can be triggered directly from this view to execute the AI's recommended outreach."},
-  ux:["Left rail keeps identity and structured facts persistently visible while the right column scrolls through richer, denser content — a pattern borrowed from Salesforce and Palantir Foundry object views.","The AI summary sits above the raw timeline so a time-pressed rep gets the 'why' before the 'what'.","Timeline unifies four previously siloed systems (support, app, billing, network) into one chronological feed, the core Customer 360+ value proposition."],
+  ux:["Left rail keeps identity and structured facts persistently visible while the right column scrolls through richer, denser content-a pattern borrowed from Salesforce and Palantir Foundry object views.","The AI summary sits above the raw timeline so a time-pressed rep gets the 'why' before the 'what'.","Timeline unifies four previously siloed systems (support, app, billing, network) into one chronological feed, the core Customer 360+ value proposition."],
   sample:"Customer 'Rivera, Marcus' is an illustrative composite account, not a real subscriber."
  },
  behavior:{ title:"Behavior Intelligence", crumb:"Home / Behavior Intelligence",
-  purpose:"Deep analysis of digital behavior — clickstream, session replay, and feature usage — to detect intent and friction at the segment or individual level.",
+  purpose:"Deep analysis of digital behavior-clickstream, session replay, and feature usage-to detect intent and friction at the segment or individual level.",
   persona:"Used by: Digital product managers, UX researchers, CX analysts",
   widgets:["Website heatmap grid","Intent detection ranked list with confidence","Session replay frame with scrub controls","Feature usage table with progress bars","Behavior score distribution and clickstream funnel bar charts"],
   interactions:["Scrub through a session replay event-by-event","Filter by channel, segment, and date range","Click a heatmap cell to see underlying page elements","Export a behavior segment to Campaign Intelligence"],
   ai:{genai:"Generates the plain-language behavior summary at the bottom of the page.",
       ml:"Intent detection and behavior scoring models classify session-level signals in near real time.",
       graph:"Not primary here; lightly used to connect sessions to the owning customer/device node.",
-      agentic:"None directly — this is an analyst investigation surface feeding decisions into other modules."},
+      agentic:"None directly-this is an analyst investigation surface feeding decisions into other modules."},
   ux:["Session replay + heatmap pairing mirrors familiar product-analytics tools (e.g. FullStory/Hotjar patterns) so digital teams onboard quickly.","Intent list is ranked by confidence, not alphabetically, so the highest-signal insight is always first.","Feature usage bars use the same visual language as the churn model's feature-contribution bars elsewhere, for cross-page consistency."],
   sample:"Heatmap and session data are placeholder patterns representing aggregated, anonymized behavioral data."
  },
@@ -918,7 +946,7 @@ const META = {
       ml:"Funnel and survival-analysis models compute step-level conversion and drop-off probability.",
       graph:"Optionally links a drop-off pattern to related support cases or network events for root-cause context.",
       agentic:"None directly initiated here, but findings can be pushed to the Campaign or Retention agent queues."},
-  ux:["The horizontal stepper is the organizing spine of the page — every other widget is a lens on the same six steps, avoiding the cognitive cost of re-orienting between charts.","Drop-off steps are marked in red on the stepper itself, so the highest-priority problem is visible before reading the table.","Confidence scores are shown alongside every AI claim to keep the surface auditable for a growth team that will act on it."],
+  ux:["The horizontal stepper is the organizing spine of the page-every other widget is a lens on the same six steps, avoiding the cognitive cost of re-orienting between charts.","Drop-off steps are marked in red on the stepper itself, so the highest-priority problem is visible before reading the table.","Confidence scores are shown alongside every AI claim to keep the surface auditable for a growth team that will act on it."],
   sample:"Journey 'New line signup' with six steps is an illustrative funnel for wireframe purposes."
  },
  graph:{ title:"Knowledge Graph Explorer", crumb:"Home / Knowledge Graph",
@@ -928,13 +956,13 @@ const META = {
   interactions:["Hover a node to preview its relationship to the center entity","Click a node to re-center the graph and expand its own connections","Adjust hop depth and entity-type filters to control graph density"],
   ai:{genai:"Not primary; may narrate a selected subgraph on request via Copilot.",
       ml:"Entity resolution models determine whether two records represent the same real-world household.",
-      graph:"This entire screen is a Graph AI surface — relationship inference, shortest-path, and community detection run on the underlying graph database.",
+      graph:"This entire screen is a Graph AI surface-relationship inference, shortest-path, and community detection run on the underlying graph database.",
       agentic:"None directly; this is an investigative tool that other agents (Marketing, Retention) consume outputs from."},
-  ux:["A single center-node radial layout keeps orientation simple even as depth increases — a deliberate simplification versus Palantir Foundry's denser graphs, appropriate for a business (not purely technical) audience.","The AI-suggested relationship panel is visually separated and labeled 'unconfirmed' to keep inferred data distinct from verified CRM data, an important trust signal in enterprise graph tools."],
+  ux:["A single center-node radial layout keeps orientation simple even as depth increases-a deliberate simplification versus Palantir Foundry's denser graphs, appropriate for a business (not purely technical) audience.","The AI-suggested relationship panel is visually separated and labeled 'unconfirmed' to keep inferred data distinct from verified CRM data, an important trust signal in enterprise graph tools."],
   sample:"Graph nodes shown are illustrative entity types, not real customer, device, or case records."
  },
  communities:{ title:"Hidden Communities", crumb:"Home / Hidden Communities",
-  purpose:"Surfaces AI-discovered customer groupings that don't exist in traditional segmentation — behavioral communities found via unsupervised clustering and graph community detection.",
+  purpose:"Surfaces AI-discovered customer groupings that don't exist in traditional segmentation-behavioral communities found via unsupervised clustering and graph community detection.",
   persona:"Used by: Segmentation strategists, marketing leadership",
   widgets:["Community card grid (population, revenue, risk, growth)","Community size-over-time bar chart","Recommended-actions list for a selected community"],
   interactions:["Click a community card to open its detail profile","Filter by minimum population or revenue threshold","Push a community directly into the Campaign Intelligence audience builder"],
@@ -966,7 +994,7 @@ const META = {
       ml:"Gradient-boosted churn classifier produces the likelihood score and feature-contribution weights shown in the explainability panel.",
       graph:"Optionally incorporates graph features (e.g. household churn contagion) as model inputs.",
       agentic:"Retention Agent executes the approved offer end-to-end once a recommendation is approved."},
-  ux:["The explainability panel is placed beside the table, not buried in a modal, because retention teams in enterprise settings are expected to justify actions — visible model reasoning is a trust and compliance requirement, not a nice-to-have.","Feature-contribution bars reuse the same bar-cell component as the feature-usage table elsewhere, reinforcing a consistent 'explainability visual language' across the product."],
+  ux:["The explainability panel is placed beside the table, not buried in a modal, because retention teams in enterprise settings are expected to justify actions-visible model reasoning is a trust and compliance requirement, not a nice-to-have.","Feature-contribution bars reuse the same bar-cell component as the feature-usage table elsewhere, reinforcing a consistent 'explainability visual language' across the product."],
   sample:"Watchlist rows and feature weights are illustrative outputs of a hypothetical churn model."
  },
  twin:{ title:"Customer Digital Twin / Digital Personas", crumb:"Home / Digital Personas",
@@ -1006,38 +1034,38 @@ const META = {
   sample:"Audience, campaign, and ROI figures are illustrative examples for wireframe purposes."
  },
  recs:{ title:"AI Recommendation Center", crumb:"Home / AI Recommendations",
-  purpose:"Central human-in-the-loop queue where every AI-generated recommendation across the platform — retention, pricing, service, outreach — awaits explicit approval or rejection.",
+  purpose:"Central human-in-the-loop queue where every AI-generated recommendation across the platform-retention, pricing, service, outreach-awaits explicit approval or rejection.",
   persona:"Used by: Senior operations and marketing leaders with approval authority",
   widgets:["Recommendation card grid with confidence and business impact","Approve / Reject / Edit actions per card","Approval history table"],
   interactions:["Approve a recommendation to dispatch it to the owning agent","Reject with optional reason, feeding model feedback","Edit a recommendation's parameters before approving"],
   ai:{genai:"Generates the recommendation description in business language, tailored to the approver's context.",
       ml:"Each recommendation originates from a domain model elsewhere in the platform (churn, pricing, sentiment).",
       graph:"Not primary; recommendations may reference graph-derived context (e.g. household risk).",
-      agentic:"This screen is the governance layer for every agent in the platform — no agent acts on customers without a recommendation clearing this queue where required."},
-  ux:["Centralizing every AI recommendation into one approval queue — rather than scattering approve/reject controls across modules — gives leadership a single place to exercise oversight, a critical trust requirement for agentic AI in a regulated telecom context.","Approval history is kept visible on the same page (not a separate audit log) to reinforce accountability at the point of decision."],
+      agentic:"This screen is the governance layer for every agent in the platform-no agent acts on customers without a recommendation clearing this queue where required."},
+  ux:["Centralizing every AI recommendation into one approval queue-rather than scattering approve/reject controls across modules-gives leadership a single place to exercise oversight, a critical trust requirement for agentic AI in a regulated telecom context.","Approval history is kept visible on the same page (not a separate audit log) to reinforce accountability at the point of decision."],
   sample:"Recommendation cards and approval history are illustrative examples for wireframe purposes."
  },
  copilot:{ title:"AI Copilot", crumb:"Home / AI Copilot",
   purpose:"Conversational interface for querying customer intelligence, generating SQL/dashboards, and taking action across the platform in natural language.",
-  persona:"Used by: All roles — executives, analysts, marketers, care agents",
+  persona:"Used by: All roles-executives, analysts, marketers, care agents",
   widgets:["Prompt library sidebar","Chat conversation panel with cited AI responses","Generated artifact panel (SQL, dashboard preview, export)"],
   interactions:["Type or select a prompt to query the platform","Click a citation to jump to the source module/record","Open a generated dashboard or export a generated artifact"],
-  ai:{genai:"Powers the entire conversational interface — query understanding, response generation, and artifact drafting (SQL, summaries, dashboards).",
+  ai:{genai:"Powers the entire conversational interface-query understanding, response generation, and artifact drafting (SQL, summaries, dashboards).",
       ml:"Retrieves and ranks relevant structured data (customers, scores, segments) referenced in responses.",
       graph:"Used when a query implies relationship traversal (e.g. 'customers connected to this outage').",
       agentic:"Can hand off multi-step requests (e.g. 'create a campaign') to the appropriate specialized agent."},
-  ux:["Citations are shown inline on every AI response — a deliberate design requirement for an enterprise data product, so any number or claim can be traced back to its source module.","The prompt library exposes the copilot's real capabilities up front, reducing the 'blank box' problem common to chat interfaces where users don't know what to ask."],
+  ux:["Citations are shown inline on every AI response-a deliberate design requirement for an enterprise data product, so any number or claim can be traced back to its source module.","The prompt library exposes the copilot's real capabilities up front, reducing the 'blank box' problem common to chat interfaces where users don't know what to ask."],
   sample:"Conversation content and citations are illustrative examples for wireframe purposes."
  },
  agents:{ title:"AI Agents", crumb:"Home / AI Agents",
-  purpose:"Operational control panel for the platform's autonomous and semi-autonomous agents — their current task, status, confidence, and execution history.",
+  purpose:"Operational control panel for the platform's autonomous and semi-autonomous agents-their current task, status, confidence, and execution history.",
   persona:"Used by: AI operations leads, platform administrators",
   widgets:["Agent card grid with live status, current task, confidence","Execution history table"],
   interactions:["Approve a pending agent action","Pause or resume an agent","Open an agent's full execution log"],
   ai:{genai:"Each agent uses GenAI to plan and articulate its current task and next steps in plain language.",
       ml:"Agents consume domain ML model outputs (churn scores, propensity, sentiment) to decide what to act on.",
       graph:"Some agents (e.g. Marketing Agent building lookalikes) traverse the knowledge graph as part of planning.",
-      agentic:"This entire screen is the agentic layer — it is the operational home for Marketing, Pricing, Customer Care, Campaign, Executive, and Retention agents."},
+      agentic:"This entire screen is the agentic layer-it is the operational home for Marketing, Pricing, Customer Care, Campaign, Executive, and Retention agents."},
   ux:["Status is color/label coded (Running / Awaiting approval / Idle) rather than a single generic 'active' state, since operations leads need to distinguish 'working', 'blocked on me', and 'not working' at a glance.","Every agent card carries an explicit 'Approve action' control, keeping human oversight one click away rather than assuming full autonomy by default."],
   sample:"Agent names, tasks, and history are illustrative examples for wireframe purposes."
  },
@@ -1050,7 +1078,7 @@ const META = {
       ml:"Rolls up scores and forecasts from every domain model in the platform into enterprise-level KPIs.",
       graph:"Surfaces graph-derived community and relationship insights at a summary level.",
       agentic:"Executive Agent can auto-refresh and export this view as a board deck on request."},
-  ux:["Layout intentionally has the lowest interaction density of any screen in the platform — wide margins, fewer controls — because it is designed to be presented, not operated, in a live executive setting.","Strategic recommendations are written as numbered priorities rather than cards, since a numbered list reads as a decision agenda in a boardroom context, matching how this content is actually used."],
+  ux:["Layout intentionally has the lowest interaction density of any screen in the platform-wide margins, fewer controls-because it is designed to be presented, not operated, in a live executive setting.","Strategic recommendations are written as numbered priorities rather than cards, since a numbered list reads as a decision agenda in a boardroom context, matching how this content is actually used."],
   sample:"KPIs, discoveries, and recommendations are illustrative examples for wireframe purposes."
  },
  settings:{ title:"Settings", crumb:"Home / Settings",

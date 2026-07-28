@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Customer Intelligence Command Center | ACL Digital</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --acl-navy: #003366;
@@ -30,11 +27,13 @@
     --warn-bg: #fef6e7;
     --accent-soft: rgba(0, 163, 224, 0.1);
     --gradient-brand: linear-gradient(135deg, var(--acl-navy) 0%, var(--acl-blue) 45%, var(--acl-cyan) 100%);
-    --sans: "DM Sans", "Helvetica Neue", Arial, sans-serif;
-    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --font: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --sans: var(--font);
+    --mono: var(--font);
     --r: 0;
     --r-lg: 0;
-    --shadow: 0 1px 3px rgba(0, 51, 102, 0.06), 0 8px 24px rgba(0, 51, 102, 0.06);
+    --hairline: 1px solid var(--line);
+    --box-border: 1px solid var(--line);
   }
 
   * { box-sizing: border-box; }
@@ -42,13 +41,26 @@
   .app * {
     border-radius: 0 !important;
   }
+  .donut,
+  .donut::after {
+    border-radius: 50% !important;
+  }
+  html {
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   body {
     margin: 0;
-    font-family: var(--sans);
+    font-family: var(--font);
     color: var(--ink);
-    background: #ffffff;
+    background: #f7f9fc;
     font-size: 14px;
-    line-height: 1.45;
+    line-height: 1.5;
+  }
+  button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
   }
 
   .app { display: flex; min-height: 100vh; }
@@ -71,7 +83,7 @@
     background: #ffffff;
   }
   .rail-brand img {
-    height: 36px;
+    height: 52px;
     width: auto;
     display: block;
     margin-bottom: 14px;
@@ -90,10 +102,11 @@
   }
   .rail-scroll { overflow-y: auto; padding: 12px 10px; flex: 1; }
   .rail-group-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    color: #94a3b8;
+    font-family: var(--font);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
     text-transform: uppercase;
     padding: 14px 10px 6px;
   }
@@ -102,28 +115,31 @@
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border-radius: 8px;
+    border-radius: 0;
     font-size: 13px;
     color: var(--ink-soft);
-    margin-bottom: 2px;
-    border: 1px solid transparent;
+    margin-bottom: 4px;
+    border: var(--box-border);
+    background: #fff;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
-  .rail-item:hover { background: #ffffff; color: var(--ink); }
+  .rail-item:hover { background: var(--line-soft); color: var(--ink); border-color: var(--line); }
   .rail-item.active {
     background: #ffffff;
     color: var(--acl-blue);
-    border-color: rgba(0, 163, 224, 0.25);
+    border: var(--box-border);
+    border-left: 3px solid var(--acl-cyan);
+    box-shadow: none;
     font-weight: 600;
   }
   .rail-ico {
     width: 28px;
     height: 28px;
     flex: none;
-    border-radius: 7px;
-    background: #ffffff;
-    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--line-soft);
+    border: var(--box-border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,7 +156,7 @@
     border-top: 1px solid var(--line);
     font-size: 10px;
     color: var(--ink-soft);
-    font-family: var(--mono);
+    font-family: var(--font);
   }
 
   /* —— Main —— */
@@ -166,17 +182,18 @@
   .search-wrap input {
     width: 100%;
     height: 38px;
-    border: 1px solid var(--line);
-    border-radius: 9px;
+    border: var(--box-border);
+    border-radius: 0;
     padding: 0 14px 0 38px;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 13px;
-    background: #ffffff;
+    background: #fff;
     color: var(--ink);
   }
   .search-wrap input:focus {
-    outline: 2px solid rgba(0, 163, 224, 0.35);
+    outline: none;
     border-color: var(--acl-cyan);
+    box-shadow: none;
   }
   .search-wrap svg {
     position: absolute;
@@ -189,8 +206,8 @@
   .top-ico {
     width: 38px;
     height: 38px;
-    border: 1px solid var(--line);
-    border-radius: 9px;
+    border: var(--box-border);
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -201,9 +218,10 @@
   }
   .top-ico.copilot {
     background: var(--gradient-brand);
-    border: none;
+    border: var(--box-border);
+    border-color: var(--acl-navy);
     color: #fff;
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 11px;
     font-weight: 600;
   }
@@ -220,7 +238,7 @@
   .avatar {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--gradient-brand);
     color: #fff;
     font-size: 12px;
@@ -228,19 +246,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: var(--box-border);
+    border-color: var(--acl-navy);
   }
 
   .content {
-    padding: 1px;
+    padding: 16px 24px 24px;
     max-width: 100%;
     width: 100%;
     margin: 0;
   }
-  .page-head { margin-bottom: 1px; }
+  .page-head {
+    margin-bottom: 12px;
+    padding: 20px 24px;
+    border: var(--box-border);
+    background: var(--paper);
+  }
   .breadcrumb {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: #94a3b8;
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--ink-soft);
     margin-bottom: 8px;
   }
   .page-title-row {
@@ -251,9 +276,9 @@
     gap: 16px;
   }
   .page-title {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0;
     margin: 0 0 6px;
     color: var(--acl-navy-deep);
   }
@@ -268,11 +293,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow);
+    padding: 10px 0 10px 12px;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    border-left: 2px solid var(--acl-cyan);
     font-size: 12px;
     color: var(--ink-soft);
     max-width: 340px;
@@ -282,40 +307,32 @@
 
   .panel {
     background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: var(--r-lg);
-    padding: 20px;
-    margin-bottom: 1px;
-    box-shadow: var(--shadow);
+    border: var(--box-border);
+    border-radius: 0;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    box-shadow: none;
   }
   .panel-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: #94a3b8;
+    color: var(--ink-soft);
     margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .panel-label::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--line-soft);
   }
 
   .filterbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .fchip {
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    border: var(--hairline);
+    border-radius: 0;
     padding: 7px 12px;
     font-size: 12px;
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #fff;
+    background: #ffffff;
     color: var(--ink-soft);
     cursor: pointer;
   }
@@ -326,11 +343,16 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid var(--line);
-    padding: 5px 10px;
+    border: var(--hairline);
+    padding: 6px 10px;
     background: #ffffff;
     font-size: 12px;
     color: var(--ink-soft);
+  }
+  .fselect-wrap:hover { border-color: rgba(0, 163, 224, 0.45); }
+  .fselect-wrap:focus-within {
+    border-color: var(--acl-cyan);
+    outline: none;
   }
   .fselect-label {
     font-weight: 500;
@@ -340,75 +362,65 @@
   .fselect {
     border: none;
     background: #ffffff;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 12px;
     color: var(--acl-navy);
     cursor: pointer;
     padding: 2px 4px;
     min-width: 120px;
   }
-  .fselect:focus { outline: 2px solid rgba(0, 163, 224, 0.35); }
+  .fselect:focus { outline: none; }
   .tag {
     display: inline-block;
-    font-family: var(--mono);
-    font-size: 10px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 4px 10px;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    border: var(--box-border);
+    border-radius: 0;
+    padding: 2px 8px;
     color: var(--ink-soft);
     background: #fff;
   }
   .tag.accent {
-    border-color: rgba(0, 163, 224, 0.35);
     color: var(--acl-blue);
-    background: #ffffff;
   }
   .tag.orange {
-    border-color: rgba(243, 146, 0, 0.35);
     color: #c67600;
-    background: #ffffff;
   }
 
   .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    gap: 10px;
+    border: none;
   }
   @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr; } }
 
   .kpi {
-    border: 1px solid var(--line);
-    border-radius: var(--r);
+    border: var(--box-border);
+    border-radius: 0;
     padding: 16px;
     background: #ffffff;
     position: relative;
     overflow: hidden;
   }
-  .kpi::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--gradient-brand);
-    opacity: 0.85;
-  }
-  .kpi.highlight::before { background: linear-gradient(90deg, var(--acl-orange), #ffb347); }
+  .kpi::before { display: none; }
+  .kpi.highlight { box-shadow: inset 3px 0 0 var(--acl-orange); }
   .kpi .k-label {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--ink-soft);
-    font-family: var(--mono);
+    font-family: var(--font);
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
   }
   .kpi .k-val {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 600;
     margin: 6px 0 2px;
     color: var(--acl-navy-deep);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
   .kpi .k-val small {
     font-size: 14px;
@@ -427,7 +439,7 @@
   }
   .kpi .k-spark i {
     flex: 1;
-    border-radius: 2px 2px 0 0;
+    border-radius: 0;
     background: linear-gradient(180deg, var(--acl-cyan), var(--acl-blue));
     opacity: 0.55;
   }
@@ -436,15 +448,21 @@
     opacity: 0.65;
   }
 
-  .row { display: flex; gap: 1px; margin-bottom: 0; }
+  .row { display: flex; gap: 12px; margin-bottom: 0; flex-wrap: wrap; }
   .col { flex: 1; min-width: 0; }
+  .row > .col + .col { border-left: none; }
+  .row.bordered-cols > .col {
+    border: var(--box-border);
+    padding: 12px;
+    background: #fff;
+  }
   @media (max-width: 900px) { .row { flex-direction: column; } }
 
   .chart-box {
     height: 168px;
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    background: #ffffff;
+    border: var(--box-border);
+    border-radius: 0;
+    background: #fff;
     padding: 14px;
     display: flex;
     flex-direction: column;
@@ -454,9 +472,11 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 8px;
+    padding-bottom: 0;
+    border-bottom: none;
   }
   .block-title { font-size: 13px; font-weight: 600; color: var(--ink); }
-  .block-sub { font-size: 10px; color: #94a3b8; font-family: var(--mono); margin-top: 2px; }
+  .block-sub { font-size: 10px; color: #94a3b8; font-family: var(--font); margin-top: 2px; }
   .chart-body { flex: 1; position: relative; min-height: 0; }
 
   .donut {
@@ -490,37 +510,118 @@
     color: var(--ink-soft);
   }
   .cluster-chip {
-    padding: 3px 8px;
-    border-radius: 20px;
-    background: #fff;
-    border: 1px solid var(--line);
+    padding: 3px 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
     font-size: 10px;
   }
+  .cluster-chip + .cluster-chip::before {
+    content: "·";
+    margin: 0 6px;
+    color: var(--line);
+  }
   .cluster-chip strong { color: var(--acl-navy); }
+
+  .chart-body-stacked {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .chart-body-stacked > .bars,
+  .chart-body-stacked > .heat,
+  .chart-body-stacked > svg,
+  .chart-body-stacked > .donut-layout {
+    flex: 1;
+    min-height: 48px;
+  }
+  .donut-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 10px;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+  }
+  .chart-legend.compact {
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .chart-legend.categories {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 4px;
+  }
+  .chart-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .chart-legend-swatch {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    box-sizing: border-box;
+  }
+  .chart-legend-swatch.line {
+    width: 18px;
+    height: 0;
+    border: none;
+    border-top: 2px solid;
+    background: transparent !important;
+  }
+  .kpi .chart-legend {
+    margin-top: 8px;
+    padding-top: 6px;
+    font-size: 9px;
+  }
+
+  .chart-legend-swatch.gradient {
+    width: 52px;
+    height: 8px;
+    border: 1px solid var(--line);
+    background: linear-gradient(90deg, rgba(0, 102, 179, 0.12), rgba(0, 102, 179, 0.88)) !important;
+  }
 
   .bars { display: flex; align-items: flex-end; gap: 6px; height: 100%; padding-top: 8px; }
   .bars i {
     flex: 1;
-    border-radius: 4px 4px 0 0;
+    border-radius: 0;
     background: linear-gradient(180deg, #cbd5e1, #94a3b8);
     min-height: 8%;
+    opacity: 1;
   }
   .bars i.hi {
-    background: linear-gradient(180deg, var(--acl-cyan), var(--acl-blue));
+    background: linear-gradient(180deg, var(--acl-cyan), var(--acl-blue)) !important;
   }
 
   table.data-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 12.5px;
+    border: var(--box-border);
   }
   table.data-table th {
     text-align: left;
-    font-family: var(--mono);
-    font-size: 9px;
+    font-family: var(--font);
+    font-size: 11px;
     text-transform: uppercase;
-    color: #94a3b8;
-    font-weight: 500;
+    color: var(--ink-soft);
+    font-weight: 600;
     border-bottom: 1px solid var(--line);
     padding: 8px 10px;
   }
@@ -535,13 +636,15 @@
   .pill {
     font-size: 10px;
     padding: 3px 9px;
-    border-radius: 20px;
-    font-family: var(--mono);
+    border-radius: 0;
+    font-family: var(--font);
     font-weight: 500;
+    border: var(--box-border);
+    background: #fff;
   }
-  .pill.high { border: 1px solid #f5c6cb; color: var(--danger); background: #ffffff; }
-  .pill.med { border: 1px solid #ffeaa7; color: var(--warn); background: #ffffff; }
-  .pill.low { border: 1px solid #b8e0c8; color: var(--success); background: #ffffff; }
+  .pill.high { color: var(--danger); border-color: rgba(192, 57, 43, 0.35); background: var(--danger-bg); }
+  .pill.med { color: var(--warn); border-color: rgba(183, 121, 31, 0.35); background: var(--warn-bg); }
+  .pill.low { color: var(--success); border-color: rgba(13, 122, 74, 0.35); background: var(--success-bg); }
 
   .insight-list { display: flex; flex-direction: column; gap: 0; }
   .list-row {
@@ -558,20 +661,21 @@
   .cardgrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: 10px;
+    border: none;
   }
   @media (max-width: 900px) { .cardgrid { grid-template-columns: 1fr; } }
 
   .icard {
-    border: 1px solid var(--line);
-    border-radius: var(--r);
+    border: var(--box-border);
+    border-radius: 0;
     padding: 16px;
     background: #ffffff;
-    transition: box-shadow 0.15s, border-color 0.15s;
+    transition: background 0.15s, border-color 0.15s;
   }
   .icard:hover {
-    box-shadow: var(--shadow);
-    border-color: rgba(0, 163, 224, 0.3);
+    background: var(--line-soft);
+    border-color: var(--acl-cyan);
   }
   .icard h5 { margin: 0 0 6px; font-size: 13px; color: var(--acl-navy); }
   .icard p { margin: 0 0 10px; font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
@@ -579,7 +683,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 10px;
-    font-family: var(--mono);
+    font-family: var(--font);
     color: var(--ink-soft);
     border-top: 1px dashed var(--line);
     padding-top: 8px;
@@ -591,22 +695,24 @@
     align-items: center;
     font-size: 11px;
     padding: 6px 12px;
-    border-radius: 7px;
-    border: 1px solid var(--line);
+    border-radius: 0;
+    border: var(--box-border);
     background: #fff;
     color: var(--ink);
     cursor: pointer;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-weight: 500;
   }
   .btn.primary {
     background: var(--gradient-brand);
-    border: none;
+    border: var(--box-border);
+    border-color: var(--acl-navy);
     color: #fff;
   }
   .btn.accent {
     background: var(--acl-orange);
-    border-color: var(--acl-orange);
+    border: var(--box-border);
+    border-color: var(--acl-orange-hover);
     color: #fff;
   }
   .btn.accent:hover { background: var(--acl-orange-hover); }
@@ -617,19 +723,20 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 4px;
+    border: none;
   }
   .layer-step {
     flex: 1;
     min-width: 140px;
     padding: 12px 14px;
-    border-radius: var(--r);
-    border: 1px solid var(--line);
+    border-radius: 0;
+    border: var(--box-border);
     background: #ffffff;
     font-size: 11px;
   }
   .layer-step span {
     display: block;
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 9px;
     color: var(--acl-cyan);
     margin-bottom: 4px;
@@ -724,8 +831,9 @@
   .communities-cardgrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: minmax(257px, auto);
-    gap: 1px;
+    grid-auto-rows: minmax(220px, auto);
+    gap: 10px;
+    border: none;
     align-items: stretch;
   }
   @media (max-width: 900px) {
@@ -736,18 +844,18 @@
   }
   .communities-cardgrid .icard {
     height: 100%;
-    min-height: 257px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 16px;
   }
-  .communities-cardgrid .icard h5 { font-size: 14px; margin-bottom: 8px; }
-  .communities-cardgrid .icard p { flex: 1 1 auto; font-size: 13px; line-height: 1.55; }
+  .communities-cardgrid .icard h5 { font-size: 14px; margin-bottom: 6px; }
+  .communities-cardgrid .icard p { flex: 1 1 auto; font-size: 13px; line-height: 1.45; }
   .communities-cardgrid .icard .btnrow { margin-top: auto; flex-wrap: wrap; }
   .avatar-lg {
     width: 56px;
     height: 56px;
-    border-radius: 50%;
+    border-radius: 0;
     margin: 0 auto 10px;
     background: var(--gradient-brand);
     color: #fff;
@@ -756,22 +864,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: var(--box-border);
+    border-color: var(--acl-navy);
   }
   .profile-name { font-weight: 700; font-size: 15px; text-align: center; }
-  .profile-meta { text-align: center; font-family: var(--mono); font-size: 10px; color: #94a3b8; margin-bottom: 12px; }
+  .profile-meta { text-align: center; font-family: var(--font); font-size: 10px; color: #94a3b8; margin-bottom: 12px; }
   .kpi.compact { padding: 12px; }
   .kpi.compact .k-val { font-size: 18px; }
-  .kpi.compact::before { height: 2px; }
+  .kpi.compact::before { display: none; }
   .kpi.compact .k-spark { display: none; }
 
   .ai-summary {
-    background: #ffffff;
-    border: 1px solid rgba(0, 163, 224, 0.25);
-    border-radius: var(--r);
-    padding: 14px;
+    background: #fff;
+    border: var(--box-border);
+    border-left: 3px solid var(--acl-cyan);
+    border-radius: 0;
+    padding: 12px 14px;
   }
   .ai-summary .ai-kind {
-    font-family: var(--mono);
+    font-family: var(--font);
     font-size: 9px;
     text-transform: uppercase;
     color: var(--acl-blue);
@@ -786,13 +897,13 @@
     height: 100%;
     min-height: 140px;
   }
-  .heat i { border-radius: 3px; }
+  .heat i { border-radius: 0; }
 
   .bar-cell {
     height: 6px;
-    border-radius: 3px;
-    background: #ffffff;
-    border: 1px solid var(--line-soft);
+    border-radius: 0;
+    background: var(--line-soft);
+    border: var(--box-border);
     position: relative;
     overflow: hidden;
     width: 64px;
@@ -805,14 +916,15 @@
     left: 0;
     top: 0;
     bottom: 0;
-    background: var(--gradient-brand);
-    border-radius: 3px;
+    background: var(--acl-blue);
+    border-radius: 0;
   }
 
   .placeholder-x {
-    border: 1px dashed var(--line);
-    border-radius: var(--r);
-    background: #ffffff;
+    border: var(--box-border);
+    border-style: dashed;
+    border-radius: 0;
+    background: #fff;
     min-height: 160px;
   }
 
@@ -840,13 +952,14 @@
   }
   .t-step:first-child .t-line { display: none; }
   .t-name { font-size: 11px; font-weight: 600; }
-  .t-sub { font-size: 9px; color: #94a3b8; font-family: var(--mono); }
+  .t-sub { font-size: 9px; color: #94a3b8; font-family: var(--font); }
 
   .explain-block {
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--r);
+    background: #fff;
+    border: var(--box-border);
+    border-radius: 0;
     padding: 14px;
+    margin-top: 12px;
   }
   .screen-stub {
     text-align: center;
@@ -863,7 +976,14 @@
 <div class="app">
   <aside class="rail">
     <div class="rail-brand">
-      <img src="ACL-Logo.webp" alt="ACL Digital — an ALTEN group company" width="160" height="36">
+      <img
+        src="https://www.acldigital.com/wp-content/uploads/2025/02/ACL-Logo-Black.webp"
+        alt="ACL Digital-an ALTEN group company"
+        width="350"
+        height="100"
+        loading="lazy"
+        decoding="async"
+      >
       <p class="product-title">Customer Intelligence AI</p>
       <p class="product-sub">Beyond Customer 360 · Communications</p>
     </div>
@@ -944,7 +1064,7 @@
     communities: {
       title: "Hidden Communities",
       crumb: "Home / Hidden Communities",
-      purpose: "Unsupervised behavioral clusters not present in traditional telecom segments — ready for campaign export.",
+      purpose: "Unsupervised behavioral clusters not present in traditional telecom segments-ready for campaign export.",
     },
     copilot: { title: "AI Copilot", crumb: "Home / AI Copilot", purpose: "Conversational access to customer intelligence (coming soon in this demo)." },
     agents: { title: "AI Agents", crumb: "Home / AI Agents", purpose: "Agent fleet operations (coming soon in this demo)." },
@@ -1121,7 +1241,7 @@
     d.insights = [
       { tag: "Insight", accent: true, title: "Early churn cluster", body: `${d.churnN.toLocaleString()} accounts in ${d.regionName} show at-risk loyalist pattern (${periodLabel}).` },
       { tag: "Alert", accent: false, title: "Digital frustration", body: f.region === "northeast" ? "Northeast repeat support-page visits up 18% vs prior." : "Gulf + Midwest clusters trending higher on self-care exits." },
-      { tag: "Opportunity", accent: false, title: "Device upgrade wave", body: `Early-upgrader cluster +${12 + lob}% — financing-forward offer recommended.` },
+      { tag: "Opportunity", accent: false, title: "Device upgrade wave", body: `Early-upgrader cluster +${12 + lob}%-financing-forward offer recommended.` },
       { tag: "Network", accent: false, title: "QoE correlation", body: `Churn +${(8 + Math.abs(reg)).toFixed(0)}% where dropped-call rate &gt; 2%.` },
     ];
     return d;
@@ -1146,7 +1266,7 @@
     const seg = { all: 1, digital_first: 1.12, high_value: 0.95, at_risk: 1.08 }[f.behaviorSegment] || 1;
     return {
       intents: [
-        { p: Math.min(99, Math.round(92 * ch * seg)), accent: true, t: "Device upgrade intent — PDP dwell" },
+        { p: Math.min(99, Math.round(92 * ch * seg)), accent: true, t: "Device upgrade intent-PDP dwell" },
         { p: Math.min(99, Math.round(81 * ch)), accent: true, t: "Plan comparison intent" },
         { p: Math.round(64 * ch), accent: false, t: "Support-seeking intent" },
         { p: Math.round(47 * seg), accent: false, t: "MNP / cancellation research" },
@@ -1183,7 +1303,7 @@
   function getChurnRows(f) {
     const all = [
       ["Patel Family Plan", "high", "91%", "$2,880/yr", "Usage drop + 2 care escalations", "15% loyalty + device promo", "7 days"],
-      ["Acct #88213 — Enterprise", "high", "88%", "$62,100/yr", "MNP portal visits detected", "Dedicated AM + tariff review", "3 days"],
+      ["Acct #88213-Enterprise", "high", "88%", "$62,100/yr", "MNP portal visits detected", "Dedicated AM + tariff review", "3 days"],
       ["Rivera, M.", "med", "67%", "$4,200/yr", "Billing NLP −0.6", "Bill review + statement fix", "10 days"],
       ["Nguyen Household", "med", "61%", "$3,050/yr", "FWA latency complaints", "Network credit + priority care", "14 days"],
       ["Acct #40921", "low", "24%", "$1,900/yr", "Seasonal roam dip", "Monitor", "—"],
@@ -1202,8 +1322,8 @@
       ["FWA bundle upsell", "3,200 mobile-only households with home broadband propensity", "High", 2.4],
       ["International roam pack", "640 frequent roamers without active travel add-on", "Med", 0.68],
       ["Enterprise tier upgrade", "410 SMB lines exceeding data caps monthly", "High", 1.9],
-      ["Retention — device bundle", "890 at-risk lines responsive to handset incentives", "Med", 1.1],
-      ["Add-a-line — household growth", "1,050 accounts with new member device signals", "Low", 0.54],
+      ["Retention-device bundle", "890 at-risk lines responsive to handset incentives", "Med", 1.1],
+      ["Add-a-line-household growth", "1,050 accounts with new member device signals", "Low", 0.54],
     ];
     const typeMap = { cross: 0, upsell: 1, retention: 4 };
     let list = all.map(o => [o[0], o[1], o[2], fmtMoneyM(o[3] * (f.region === "west" ? 1.08 : f.region === "northeast" ? 0.94 : 1))]);
@@ -1265,6 +1385,100 @@
     return h + "</div>";
   }
 
+  const CHART_COLORS = {
+    blue: "#0066b3",
+    cyan: "#00a3e0",
+    gray: "#94a3b8",
+    orange: "#f39200",
+    line: "#dce3ec",
+    bar: "#94a3b8",
+  };
+
+  function chartLegend(items, opts) {
+    opts = opts || {};
+    const extra = [opts.compact ? "compact" : "", opts.categories ? "categories" : ""].filter(Boolean).join(" ");
+    return `<div class="chart-legend${extra ? " " + extra : ""}" role="list">${
+      items.map(it => {
+        if (it.gradient) {
+          return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch gradient"></span><span>${it.label}</span></span>`;
+        }
+        if (it.line) {
+          return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch line" style="border-top-color:${it.color}"></span><span>${it.label}</span></span>`;
+        }
+        return `<span class="chart-legend-item" role="listitem"><span class="chart-legend-swatch" style="background:${it.color}"></span><span>${it.label}</span></span>`;
+      }).join("")
+    }</div>`;
+  }
+
+  function wrapChartBody(inner, legendHtml) {
+    return `<div class="chart-body chart-body-stacked">${inner}${legendHtml || ""}</div>`;
+  }
+
+  function barSeriesLegend(hiLabel, baseLabel) {
+    return chartLegend([
+      { color: CHART_COLORS.bar, label: baseLabel || "Baseline volume" },
+      { color: CHART_COLORS.cyan, label: hiLabel || "Highlighted period" },
+    ], { compact: true });
+  }
+
+  function categoryLegend(labels) {
+    if (!labels || !labels.length) return "";
+    return chartLegend(labels.map(l => ({ color: CHART_COLORS.gray, label: l })), { categories: true });
+  }
+
+  function barsChart(n, hiIdx, seed, opts) {
+    opts = opts || {};
+    let leg = barSeriesLegend(opts.hiLabel, opts.baseLabel);
+    if (opts.categories) leg += categoryLegend(opts.categories);
+    else if (opts.categoryNote) leg += chartLegend([{ color: CHART_COLORS.gray, label: opts.categoryNote }], { categories: true });
+    return wrapChartBody(`<div class="bars">${bars(n, hiIdx, seed)}</div>`, leg);
+  }
+
+  function lineChart(points, stroke, label, extraSeries) {
+    const series = [{ color: stroke, label: label, line: true }];
+    if (extraSeries) extraSeries.forEach(s => series.push({ color: s.color, label: s.label, line: true }));
+    const svg = `<svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="2.5"/></svg>`;
+    let leg = chartLegend(series, { compact: true });
+    return wrapChartBody(svg, leg);
+  }
+
+  function donutChart(segments) {
+    const inner = `<div class="donut-layout"><div class="donut"></div></div>`;
+    return wrapChartBody(inner, chartLegend(segments.map(s => ({ color: s.color, label: s.label })), { compact: true }));
+  }
+
+  function heatChart(cols, rows, seed, opts) {
+    opts = opts || {};
+    const leg = chartLegend([{ gradient: true, label: opts.scaleLabel || "Low → high activity intensity" }], { compact: true });
+    if (opts.categoryNote) {
+      return wrapChartBody(heat(cols, rows, seed), leg + chartLegend([{ color: CHART_COLORS.gray, label: opts.categoryNote }], { categories: true }));
+    }
+    return wrapChartBody(heat(cols, rows, seed), leg);
+  }
+
+  function monthLabels(n, start) {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    start = start || 0;
+    return Array.from({ length: n }, (_, i) => months[(start + i) % 12]);
+  }
+
+  function dayLabels(n) {
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    return Array.from({ length: n }, (_, i) => days[i % 7]);
+  }
+
+  function funnelLabels(n) {
+    return ["Visit", "Browse", "Configure", "Cart", "Checkout", "Confirm"].slice(0, n);
+  }
+
+  const DONUT_SEGMENTS = [
+    { color: CHART_COLORS.blue, label: "Value seekers (28%)" },
+    { color: CHART_COLORS.cyan, label: "Early upgraders (24%)" },
+    { color: CHART_COLORS.gray, label: "At-risk loyalists (16%)" },
+    { color: CHART_COLORS.orange, label: "Digital-first (14%)" },
+    { color: CHART_COLORS.line, label: "Other (18%)" },
+  ];
+
   function pill(text, cls) {
     return `<span class="pill ${cls}">${text}</span>`;
   }
@@ -1281,15 +1495,15 @@
     const m = META[key];
     const layers = key === "dashboard" ? `
       <div class="layer-banner" style="margin-top:12px">
-        <div class="layer-step"><span>Layer 1</span><b>Traditional C360</b> — who the subscriber is</div>
-        <div class="layer-step"><span>Layer 2</span><b>Behavior intelligence</b> — how they act</div>
-        <div class="layer-step"><span>Layer 3</span><b>Predictive intelligence</b> — what they will do</div>
-        <div class="layer-step"><span>Layer 4</span><b>Autonomous intelligence</b> — act in real time</div>
+        <div class="layer-step"><span>Layer 1</span><b>Traditional C360</b>-who the subscriber is</div>
+        <div class="layer-step"><span>Layer 2</span><b>Behavior intelligence</b>-how they act</div>
+        <div class="layer-step"><span>Layer 3</span><b>Predictive intelligence</b>-what they will do</div>
+        <div class="layer-step"><span>Layer 4</span><b>Autonomous intelligence</b>-act in real time</div>
       </div>` : "";
     const copilot = key === "dashboard" ? `
       <div class="exec-copilot-pill">
         <span class="spark">✦</span>
-        <span><strong>Executive Copilot</strong> — “Which segments show rising churn risk this week?”</span>
+        <span><strong>Executive Copilot</strong>-“Which segments show rising churn risk this week?”</span>
       </div>` : "";
     return `
       <header class="page-head">
@@ -1324,12 +1538,13 @@
         <div class="k-val">${k.val}${k.unit ? ` <small>${k.unit}</small>` : ""}</div>
         <div class="k-delta ${k.dir}">${k.delta}</div>
         <div class="k-spark">${spark(12, seed + k.label.length)}</div>
+        ${chartLegend([{ color: CHART_COLORS.cyan, label: "12-period trend (indexed)" }], { compact: true })}
       </article>`).join("");
 
     const churnRows = getChurnRows(filters).slice(0, 5).map(r => [r[0], filters.segment === "enterprise" ? "Enterprise mobility" : "Multi-line household", r[1], r[3], r[4]]);
     const recs = [
       { title: "Prioritize retention outreach", desc: d.churnN.toLocaleString() + " at-risk accounts in " + d.regionName + " (" + filterLabel("segment", filters.segment) + ").", pri: "Priority: Critical", impact: fmtMoneyM(d.oppM * 2) + " ARPU at risk", primary: "Approve cohort" },
-      { title: "Device-upgrade offer — early upgraders", desc: "Financing-led upgrade path for " + filterLabel("lob", filters.lob) + ".", pri: "Priority: High", impact: fmtMoneyM(d.oppM * 0.28) + " uplift est.", primary: "Launch offer" },
+      { title: "Device-upgrade offer-early upgraders", desc: "Financing-led upgrade path for " + filterLabel("lob", filters.lob) + ".", pri: "Priority: High", impact: fmtMoneyM(d.oppM * 0.28) + " uplift est.", primary: "Launch offer" },
       { title: "Escalate digital frustration regions", desc: "Proactive SMS before contact-center spike · " + d.regionName + ".", pri: "Priority: High", impact: Math.round(d.churnN * 0.15).toLocaleString() + " subscribers", primary: "Notify ops" },
     ];
 
@@ -1340,27 +1555,25 @@
           <div class="panel-label">Behavior clusters &amp; intent</div>
           <div class="row"><div class="col"><div class="chart-box" style="height:200px">
             <div class="cb-head"><div><div class="block-title">Micro-segment distribution</div><div class="block-sub">${filterLabel("segment", filters.segment)}</div></div></div>
-            <div class="chart-body"><div class="donut"></div><div class="cluster-legend">
-              <span class="cluster-chip"><strong>Value seekers</strong></span><span class="cluster-chip"><strong>Early upgraders</strong></span>
-              <span class="cluster-chip"><strong>At-risk loyalists</strong></span><span class="cluster-chip"><strong>Digital-first</strong></span>
-            </div></div></div></div>
+            ${donutChart(DONUT_SEGMENTS)}
+            </div></div>
             <div class="col"><div class="chart-box" style="height:200px">
               <div class="cb-head"><div><div class="block-title">Data &amp; engagement velocity</div><div class="block-sub">${filterLabel("period", filters.period)}</div></div></div>
-              <div class="chart-body"><svg viewBox="0 0 200 90" width="100%" height="100%" preserveAspectRatio="none"><polyline points="0,70 20,58 40,62 60,48 80,52 100,32 120,38 140,22 160,26 180,14 200,18" fill="none" stroke="#00a3e0" stroke-width="2.5"/></svg></div>
+              ${lineChart("0,70 20,58 40,62 60,48 80,52 100,32 120,38 140,22 160,26 180,14 200,18", CHART_COLORS.cyan, "Engagement velocity")}
             </div></div></div>
         </section></div>
         <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Network &amp; care sentiment</div>
           <div class="chart-box" style="height:200px"><div class="cb-head"><div><div class="block-title">Sentiment pulse (7d)</div></div><span class="tag orange">${d.sentiment}</span></div>
-          <div class="chart-body"><div class="bars">${bars(7, [5, 6], seed)}</div></div></div>
-        </section></div>
+          ${barsChart(7, [5, 6], seed, { hiLabel: "Latest 2 days (focus)", baseLabel: "Prior days", categories: dayLabels(7) })}
+          </div></section></div>
       </div>
       <div class="row" style="margin-bottom:1px">
-        <div class="col" style="flex:1.4"><section class="panel" style="margin-bottom:0"><div class="panel-label">Top churn risks — AI ranked</div>
+        <div class="col" style="flex:1.4"><section class="panel" style="margin-bottom:0"><div class="panel-label">Top churn risks-AI ranked</div>
           <table class="data-table"><thead><tr><th>Account</th><th>Segment</th><th>Risk</th><th>ARPU impact</th><th>Leading signal</th></tr></thead><tbody>
           ${churnRows.map(r => `<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${pill(r[2], r[2])}</td><td>${r[3]}</td><td style="color:var(--ink-soft)">${r[4]}</td></tr>`).join("")}
           </tbody></table></section></div>
         <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">AI insight feed</div>
-          ${d.insights.map(i => `<div class="list-row"><span class="tag ${i.accent ? "accent" : ""}">${i.tag}</span><div><b>${i.title}</b> — ${i.body}</div></div>`).join("")}
+          ${d.insights.map(i => `<div class="list-row"><span class="tag ${i.accent ? "accent" : ""}">${i.tag}</span><div><b>${i.title}</b>-${i.body}</div></div>`).join("")}
         </section></div>
       </div>
       <section class="panel"><div class="panel-label">AI recommendations</div><div class="cardgrid">
@@ -1394,16 +1607,16 @@
         </section>
         <div class="row" style="margin-bottom:1px">
           <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Behavior score trend</div>
-            <div class="chart-box"><div class="chart-body"><div class="bars">${bars(12, [8, 9], seed)}</div></div></div>
+            <div class="chart-box">${barsChart(12, [8, 9], seed, { hiLabel: "Recent months", baseLabel: "Monthly score", categories: monthLabels(12) })}</div>
           </section></div>
           <div class="col"><section class="panel" style="margin-bottom:0"><div class="panel-label">Touchpoint mix (${filters.period})</div>
-            <div class="chart-box"><div class="chart-body"><div class="bars">${bars(8, [2, 5], seed + 1)}</div></div></div>
+            <div class="chart-box">${barsChart(8, [2, 5], seed + 1, { hiLabel: "Primary channels", baseLabel: "Other touchpoints", categories: ["App", "Web", "Retail", "Care", "IVR", "SMS", "Email", "Partner"] })}</div>
           </section></div>
         </div>
         <section class="panel"><div class="panel-label">Unified activity timeline</div>
-          <div class="list-row"><span class="tag">Care</span><div><b>Billing dispute</b> — voice, 8 min, open · sentiment −0.7 <span class="block-sub">2d ago</span></div></div>
+          <div class="list-row"><span class="tag">Care</span><div><b>Billing dispute</b>-voice, 8 min, open · sentiment −0.7 <span class="block-sub">2d ago</span></div></div>
           <div class="list-row"><span class="tag">App</span><div><b>Competitor plan comparison</b> in self-care <span class="block-sub">4d ago</span></div></div>
-          <div class="list-row"><span class="tag">Billing</span><div><b>Autopay success</b> — postpaid cycle <span class="block-sub">12d ago</span></div></div>
+          <div class="list-row"><span class="tag">Billing</span><div><b>Autopay success</b>-postpaid cycle <span class="block-sub">12d ago</span></div></div>
           <div class="list-row"><span class="tag">Network</span><div><b>3 dropped calls</b> · tower cluster NE-114 <span class="block-sub">14d ago</span></div></div>
         </section>
         <section class="panel"><div class="panel-label">Support &amp; billing cases</div>
@@ -1422,7 +1635,7 @@
     return pageHead("behavior") + pageFilterPanel("Filters", `${fd("channel", "Channel")}${fd("behaviorSegment", "Segment", "behaviorSegment")}${fd("period", "Period")}${fd("region", "Region")}`) + `
       <div class="row behavior-layout" style="margin-bottom:1px">
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">Self-care heatmap</div>
-          <div class="chart-box behavior-panel-content">${heat(14, 7, seed)}</div>
+          <div class="chart-box behavior-panel-content">${heatChart(14, 7, seed, { scaleLabel: "Low → high click density", categoryNote: "Columns: hour of day · Rows: page zones" })}</div>
         </section></div>
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">Intent detection</div>
           <div class="behavior-panel-content">
@@ -1449,10 +1662,10 @@
       </div>
       <div class="row behavior-layout" style="margin-bottom:1px">
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">Behavior score distribution</div>
-          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(10, [7, 8], seed)}</div></div></div>
+          <div class="chart-box behavior-panel-content">${barsChart(10, [7, 8], seed, { hiLabel: "Top deciles", baseLabel: "Score distribution", categoryNote: "Behavior score deciles (population %)" })}</div>
         </section></div>
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">Acquisition funnel</div>
-          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(6, [0], seed + 2)}</div></div></div>
+          <div class="chart-box behavior-panel-content">${barsChart(6, [0], seed + 2, { hiLabel: "Entry step", baseLabel: "Down-funnel steps", categories: funnelLabels(6) })}</div>
         </section></div>
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">AI summary</div>
           <div class="behavior-panel-content">
@@ -1472,8 +1685,8 @@
           <div class="t-step ${s.drop ? "drop" : ""}"><div class="t-line"></div><div class="t-dot"></div><div class="t-name">${s.name}</div><div class="t-sub">${s.sub}</div></div>`).join("")}
         </div>
         <div class="row" style="margin-top:12px">
-          <div class="col"><div class="chart-box"><div class="block-title">Conversion by step</div><div class="bars">${bars(6, [0], seed)}</div></div></div>
-          <div class="col"><div class="chart-box"><div class="block-title">Time on step</div><svg viewBox="0 0 200 90" width="100%" height="90" preserveAspectRatio="none"><polyline points="0,60 40,40 80,55 120,20 160,45 200,30" fill="none" stroke="#00a3e0" stroke-width="2.5"/></svg></div></div>
+          <div class="col"><div class="chart-box"><div class="block-title">Conversion by step</div>${barsChart(6, [0], seed, { hiLabel: "First step (100%)", baseLabel: "Step conversion", categories: funnelLabels(6) })}</div></div>
+          <div class="col"><div class="chart-box"><div class="block-title">Time on step</div>${lineChart("0,60 40,40 80,55 120,20 160,45 200,30", CHART_COLORS.cyan, "Median time on step (indexed)")}</div></div>
         </div>
       </section>
       <div class="row" style="margin-bottom:1px">
@@ -1504,7 +1717,7 @@
           </tbody></table>
           <div class="churn-panel-fill" aria-hidden="true"></div>
         </section></div>
-        <div class="col"><section class="panel churn-panel"><div class="panel-label">Explainable AI — ${explainName}</div>
+        <div class="col"><section class="panel churn-panel"><div class="panel-label">Explainable AI-${explainName}</div>
           <div class="explain-block"><div class="block-sub" style="margin-bottom:10px">Model: Gradient-boosted churn · v4.2 · ${filterLabel("region", filters.region)}</div>
           <table class="data-table"><thead><tr><th>Signal</th><th>Weight</th></tr></thead><tbody>
             <tr><td>Data usage decline 30d</td><td>${barCell(w1 * 2.5)}${w1 + 6}%</td></tr>
@@ -1527,7 +1740,7 @@
       <section class="panel"><div class="panel-label">Opportunity cards (${opps.length})</div><div class="cardgrid">
         ${opps.map(o => iCard(o[0], o[1], "Priority: " + o[2], "Potential: " + o[3], `<button type="button" class="btn accent">View explanation</button><button type="button" class="btn ghost">Assign</button>`)).join("")}
       </div></section>
-      <section class="panel"><div class="panel-label">AI explanation — ${opps[0] ? opps[0][0] : "Family plan cross-sell"}</div>
+      <section class="panel"><div class="panel-label">AI explanation-${opps[0] ? opps[0][0] : "Family plan cross-sell"}</div>
         <div class="ai-summary"><p>Synthetic match for ${filterLabel("segment", filters.segment)} in ${filterLabel("region", filters.region)}: conversion propensity ${prop}% (${filterLabel("period", filters.period)}).</p></div>
       </section>`;
   }
@@ -1542,13 +1755,13 @@
       </div></section>
       <div class="row behavior-layout" style="margin-bottom:1px">
         <div class="col"><section class="panel behavior-panel"><div class="panel-label">Community size over time</div>
-          <div class="chart-box behavior-panel-content"><div class="chart-body"><div class="bars">${bars(6, [2], seed)}</div></div></div>
+          <div class="chart-box behavior-panel-content">${barsChart(6, [2], seed, { hiLabel: "Selected community", baseLabel: "Community size", categories: monthLabels(6, 6) })}</div>
         </section></div>
-        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Recommended actions — ${focus[0]}</div>
+        <div class="col"><section class="panel behavior-panel"><div class="panel-label">Recommended actions-${focus[0]}</div>
           <div class="behavior-panel-content">
-            <div class="list-row">🎯 Bundle upsell — ${58 + (seed % 10)}% propensity match</div>
+            <div class="list-row">🎯 Bundle upsell-${58 + (seed % 10)}% propensity match</div>
             <div class="list-row">📩 Decision-maker billing summary email</div>
-            <div class="list-row">🛡️ Retention offers — ${focus[3]} revenue concentration</div>
+            <div class="list-row">🛡️ Retention offers-${focus[3]} revenue concentration</div>
             <div class="behavior-panel-fill" aria-hidden="true"></div>
           </div>
         </section></div>
@@ -1556,7 +1769,7 @@
   }
 
   function renderStub(key) {
-    return pageHead(key) + globalFilterPanel() + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>Filters above apply globally in this demo. Full module coming in the roadmap — try Command and Predictive screens for interactive synthetic data.</p></div></section>`;
+    return pageHead(key) + globalFilterPanel() + `<section class="panel"><div class="screen-stub"><h2>${META[key].title}</h2><p>Filters above apply globally in this demo. Full module coming in the roadmap-try Command and Predictive screens for interactive synthetic data.</p></div></section>`;
   }
 
   const RENDER = {
