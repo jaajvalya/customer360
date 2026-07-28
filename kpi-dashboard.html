@@ -1027,6 +1027,9 @@
       { k: "agents", ico: "09", label: "AI Agents" },
       { k: "command", ico: "10", label: "Executive Command Center" },
     ]},
+    { group: "Connections", items: [
+      { k: "datasources", ico: "11", label: "Manage Data Sources" },
+    ]},
   ];
 
   const META = {
@@ -1069,6 +1072,11 @@
     copilot: { title: "AI Copilot", crumb: "Home / AI Copilot", purpose: "Conversational access to customer intelligence (coming soon in this demo)." },
     agents: { title: "AI Agents", crumb: "Home / AI Agents", purpose: "Agent fleet operations (coming soon in this demo)." },
     command: { title: "Executive Command Center", crumb: "Home / Executive Command Center", purpose: "Boardroom rollup view (coming soon in this demo)." },
+    datasources: {
+      title: "Manage Data Sources",
+      crumb: "Home / Connections / Manage Data Sources",
+      purpose: "Connect and govern CRM, billing, network, digital, and third-party feeds that power Customer Intelligence.",
+    },
   };
 
   let currentScreen = "dashboard";
@@ -1783,6 +1791,7 @@
     copilot: () => renderStub("copilot"),
     agents: () => renderStub("agents"),
     command: () => renderStub("command"),
+    datasources: () => renderStub("datasources"),
   };
 
   const railNav = document.getElementById("railNav");
